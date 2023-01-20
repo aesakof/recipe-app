@@ -1,5 +1,6 @@
 from django.db import models
 from django.forms import IntegerField
+from django.conf import settings
 
 # Create your models here.
 
@@ -11,7 +12,7 @@ class Recipe(models.Model):
             return super().get_queryset()
 
     recipe_name = models.CharField(max_length=50)
-    author = models.CharField() #need to update with User foreign key
+    author = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     photo = models.ImageField()
     life_story = models.CharField(max_length=500)
     prep_time = models.IntegerField()
