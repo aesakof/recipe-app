@@ -72,7 +72,7 @@ export default function Login() {
                     localStorage.setItem('username', res.data.username)
                 })
 
-				navigate('/profile');
+				navigate('/');
                 console.log("should have redirected");
 				//console.log(res);
 				//console.log(res.data);
