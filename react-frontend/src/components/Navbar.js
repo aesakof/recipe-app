@@ -31,7 +31,7 @@ export default function Navbar() {
                             <Link to="/">Home</Link>
                         </li>
                         <li>
-                            <Link to="index.html">All Recipes</Link>
+                            <Link to="/recipes/all">All Recipes</Link>
                         </li>
                         <li>
                             <Link to="index.html">My Recipes</Link>
