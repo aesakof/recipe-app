@@ -25,7 +25,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
     def get_permissions(self):
-        if self.action in ['update', 'partial_update', 'destroy', 'retrieve']:
+        if self.action in ['update', 'partial_update', 'destroy']:
             self.permission_classes = [IsAuthenticated, IsOwner]
         elif self.action in ['create']:
             self.permission_classes = [IsAuthenticated]
