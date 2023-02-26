@@ -13,6 +13,7 @@ import Home from "./components/Home"
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AllRecipes from './components/AllRecipes';
 import Recipe from './components/Recipe';
+import EditRecipe from './components/EditRecipe';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
 
                     <Route exact path="/recipes/all" element={<AllRecipes />} />
                     <Route exact path="/recipe/:id" element={<Recipe />} />
+                    <Route exact path="/recipe/edit/:id" element={<EditRecipe />} />
 
 
                     {/* <Route path="/:user" component={Profile} /> */}

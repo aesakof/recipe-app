@@ -22,10 +22,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save(author=self.request.user)
 
     def get_permissions(self):
-        if self.action in ['update', 'partial_update', 'destroy']:
+        if self.action in ['update', 'partial_update', 'destroy']: # also retrieve
             self.permission_classes = [IsAuthenticated, IsOwner]
         elif self.action in ['create']:
             self.permission_classes = [IsAuthenticated]
