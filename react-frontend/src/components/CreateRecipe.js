@@ -23,6 +23,8 @@ import {
 import Moment from 'moment';
 import Paper from '@material-ui/core/Paper';
 
+import axios from 'axios';
+
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -45,13 +47,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function EditRecipe() {
+export default function CreateRecipe() {
 
     const navigate = useNavigate();
     const { id } = useParams();
 	const initialFormData = {
         recipe_name: '',
-        username: '',
         photo: '',
         life_story: '',
         prep_time: '',
@@ -66,29 +67,9 @@ export default function EditRecipe() {
     };
 
 	const [formData, setFormData] = useState(initialFormData);
+    const [file, setFile] = useState();
 
     const { username } = useContext(Context);
-
-    useEffect(() => {
-        axiosInstance.get('/recipes/' + id).then((res) => {
-            setFormData({
-                ...formData,
-                'recipe_name': res.data.recipe_name,
-                'username': res.data.username,
-                'photo': res.data.photo,
-                'life_story': res.data.life_story,
-                'prep_time': res.data.prep_time,
-                'cook_time': res.data.cook_time,
-                'servings': res.data.servings,
-                'ingredients': res.data.ingredients,
-                'equipment': res.data.equipment,
-                'directions': res.data.directions,
-                'published_date': Moment(res.data.date).format('YYYY-MM-DD 12:00:00'),
-                'updated_date': Moment(res.data.date).format('YYYY-MM-DD 12:00:00'),
-                'rating': res.data.rating
-            });
-        });
-    }, [username])
 
 	const handleChange = (e) => {
         setFormData({
@@ -97,6 +78,18 @@ export default function EditRecipe() {
             [e.target.name]: e.target.value.trim(),
         });
 	};
+
+
+    function handleImageChange(event) {
+        setFile(event.target.files[0])
+      }
+    // const handleImageChange = (e) => {
+    //     setFormData({
+    //         ...formData,
+    //         // Trimming any whitespace
+    //         [e.target.name]: e.target.files[0],
+    //     });
+    // };
 
     const handleCarChange = (e) => {
         setFormData({
@@ -112,28 +105,68 @@ export default function EditRecipe() {
         });
     };
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		axiosInstance
-            .put('/recipes/' + id + '/', {
-                // username: 1,
-                recipe_name: formData.recipe_name,
-                username: formData.username,
-                photo: formData.photo,
-                life_story: formData.life_story,
-                prep_time: parseFloat(formData.prep_time),
-                cook_time: parseFloat(formData.cook_time),
-                servings: parseFloat(formData.servings),
-                ingredients: formData.ingredients,
-                equipment: formData.equipment,
-                directions: formData.directions,
-                updated_date: Moment().format('YYYY-MM-DD 12:00:00'),
-                rating: parseFloat(formData.rating)
-			})
-			.then((res) => {
-				navigate('/recipes/all');
-			});
-	};
+
+    function handleSubmit(event) {
+        event.preventDefault()
+        const url = 'http://127.0.0.1:8000/api/recipes/';
+        const formData = new FormData();
+        formData.append('photo', file);
+        formData.append('recipe_name', 'test');
+        formData.append('life_story', 'test');
+        formData.append('prep_time', 3);
+        formData.append('cook_time', 3);
+        formData.append('servings', 3);
+        formData.append('ingredients', 'test');
+        formData.append('equipment', 'test');
+        formData.append('directions', 'test');
+        formData.append('published_date', '2023-03-03');
+        formData.append('updated_date', '2023-03-03');
+        formData.append('rating', 3);
+
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data',
+                'Authorization': localStorage.getItem('access_token') ?
+                'Bearer ' + localStorage.getItem('access_token') :
+                null,
+            },
+        };
+        axiosInstance.post(url, formData, config).then((response) => {
+            console.log(response.data);
+        });
+    };
+
+	// const handleSubmit = (e) => {
+	// 	e.preventDefault();
+    //     const config = {
+    //         headers: {
+    //             'Authorization': localStorage.getItem('access_token') ?
+    //             'Bearer ' + localStorage.getItem('access_token') :
+    //             null,
+    //             'Content-Type': 'multipart/form-data',
+    //             'accept': 'application/json',
+    //         },
+    //     };
+
+	// 	axiosInstance
+    //         .post('/recipes/', {
+    //             // username: 1,
+    //             recipe_name: formData.recipe_name,
+    //             photo: formData.photo,
+    //             life_story: formData.life_story,
+    //             prep_time: parseFloat(formData.prep_time),
+    //             cook_time: parseFloat(formData.cook_time),
+    //             servings: parseFloat(formData.servings),
+    //             ingredients: formData.ingredients,
+    //             equipment: formData.equipment,
+    //             directions: formData.directions,
+    //             updated_date: Moment().format('YYYY-MM-DD 12:00:00'),
+    //             rating: parseFloat(formData.rating)
+	// 		}, config)
+	// 		.then((res) => {
+	// 			navigate('/recipes/all');
+	// 		});
+	// };
 
 	const classes = useStyles();
 
@@ -142,7 +175,7 @@ export default function EditRecipe() {
 			<CssBaseline />
 			<div className={classes.paper}>
 				<Typography component="h1" variant="h5">
-					Edit Recipe
+					Create New Recipe
 				</Typography>
 				<form className={classes.form} noValidate>
 					<Grid container spacing={2}>
@@ -161,7 +194,12 @@ export default function EditRecipe() {
 							/>
 						</Grid>
                         <Grid item xs={12}>
-							<TextField
+                            <label>Recipe Photo: </label>
+                            <input type="file" 
+                                name="image_url"
+                                accept="image/jpeg,image/png,image/gif"
+                                onChange={(e) => {handleImageChange(e)}}/>
+							{/* <TextField
 								variant="outlined"
                                 type="text"
 								required
@@ -172,7 +210,7 @@ export default function EditRecipe() {
 								autoComplete="photo"
                                 value={formData.photo}
 								onChange={handleChange}
-							/>
+							/> */}
 						</Grid>
                         <Grid item xs={12}>
 							<TextField
