@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom"
 
 
 export default function AllRecipes() {
-    // const { username, setUsername } = useContext(Context);
+    const { username } = useContext(Context);
     const [ recipe, setRecipe ] = useState([]);
     const { id } = useParams();
 
@@ -21,9 +21,13 @@ export default function AllRecipes() {
                 recipe === null ?
                 <h5>Loading recipes data...</h5> :
                 <div>
+                    { username !== recipe.username ?
+                        <></> : 
+                        <Link to={'/recipe/edit/' + recipe.id}>Edit Recipe</Link>
+                    }                    
                     <h1>{recipe.recipe_name}</h1>
                     <p>Author: {recipe.username}</p>
-                    <p>Photo: {recipe.photo}</p>
+                    <p>Photo: <img src={recipe.photo}/></p>
                     <p>Life Story: {recipe.life_story}</p>
                     <p>Prep Time: {recipe.prep_time}</p>
                     <p>Cook Time: {recipe.cook_time}</p>

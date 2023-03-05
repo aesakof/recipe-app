@@ -13,7 +13,7 @@ class Recipe(models.Model):
 
     recipe_name = models.CharField(max_length=50)
     author = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
-    photo = models.ImageField()
+    photo = models.ImageField(upload_to='images/')
     life_story = models.CharField(max_length=500)
     prep_time = models.IntegerField()
     cook_time = models.IntegerField()

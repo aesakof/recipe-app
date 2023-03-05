@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import axiosInstance from '../axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Context } from '../Context';
+import { useForm } from "react-hook-form";
+
 //MaterialUI
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -46,10 +48,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EditRecipe() {
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
 
     const navigate = useNavigate();
     const { id } = useParams();
-	const initialFormData = {
+	const blankFormData = {
         recipe_name: '',
         username: '',
         photo: '',
@@ -65,240 +68,237 @@ export default function EditRecipe() {
         rating: ''
     };
 
-	const [formData, setFormData] = useState(initialFormData);
+	const [initialFormData, setInitialFormData] = useState(blankFormData);
 
     const { username } = useContext(Context);
 
     useEffect(() => {
         axiosInstance.get('/recipes/' + id).then((res) => {
-            setFormData({
-                ...formData,
-                'recipe_name': res.data.recipe_name,
-                'username': res.data.username,
-                'photo': res.data.photo,
-                'life_story': res.data.life_story,
-                'prep_time': res.data.prep_time,
-                'cook_time': res.data.cook_time,
-                'servings': res.data.servings,
-                'ingredients': res.data.ingredients,
-                'equipment': res.data.equipment,
-                'directions': res.data.directions,
-                'published_date': Moment(res.data.date).format('YYYY-MM-DD 12:00:00'),
-                'updated_date': Moment(res.data.date).format('YYYY-MM-DD 12:00:00'),
-                'rating': res.data.rating
-            });
+            setValue('recipe_name', res.data.recipe_name)
+            setValue('photo', res.data.photo)
+            setValue('life_story', res.data.life_story)
+            setValue('prep_time', res.data.prep_time)
+            setValue('cook_time', res.data.cook_time)
+            setValue('servings', res.data.servings)
+            setValue('ingredients', res.data.ingredients)
+            setValue('equipment', res.data.equipment)
+            setValue('directions', res.data.directions)
+            setValue('published_date', res.data.published_date)
+            setValue('updated_date', res.data.updated_date)
+            setValue('rating', res.data.rating)
         });
     }, [username])
 
-	const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            // Trimming any whitespace
-            [e.target.name]: e.target.value.trim(),
-        });
-	};
+    const onFormSubmit = (data) => { 
+        console.log(data);
+        const formData = new FormData();
+        formData.append('photo', data.photo[0]);
+        formData.append('recipe_name', data.recipe_name);
+        formData.append('life_story', data.life_story);
+        formData.append('prep_time', data.prep_time);
+        formData.append('cook_time', data.cook_time);
+        formData.append('servings', data.servings);
+        formData.append('ingredients', data.ingredients);
+        formData.append('equipment', data.equipment);
+        formData.append('directions', data.directions);
+        formData.append('published_date', data.published_date);
+        formData.append('updated_date', data.updated_date);
+        formData.append('rating', data.rating);
 
-    const handleCarChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
-	};
-
-    const handleDateChange = (date) => {
-        setFormData({
-            ...formData,
-            date: date
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data',
+                'Authorization': localStorage.getItem('access_token') ?
+                'Bearer ' + localStorage.getItem('access_token') :
+                null,
+            },
+        };
+        axiosInstance.put('/recipes/' + id + '/', formData, config).then((response) => {
+            console.log(response.data);
         });
     };
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		axiosInstance
-            .put('/recipes/' + id + '/', {
-                // username: 1,
-                recipe_name: formData.recipe_name,
-                username: formData.username,
-                photo: formData.photo,
-                life_story: formData.life_story,
-                prep_time: parseFloat(formData.prep_time),
-                cook_time: parseFloat(formData.cook_time),
-                servings: parseFloat(formData.servings),
-                ingredients: formData.ingredients,
-                equipment: formData.equipment,
-                directions: formData.directions,
-                updated_date: Moment().format('YYYY-MM-DD 12:00:00'),
-                rating: parseFloat(formData.rating)
-			})
-			.then((res) => {
-				navigate('/recipes/all');
-			});
-	};
+    const onErrors = (errors) => console.error(errors);
 
-	const classes = useStyles();
-
-	return (
-		<Container component={Paper} maxWidth="xs">
-			<CssBaseline />
-			<div className={classes.paper}>
-				<Typography component="h1" variant="h5">
-					Edit Recipe
-				</Typography>
-				<form className={classes.form} noValidate>
-					<Grid container spacing={2}>
-						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-                                type="text"
-								required
-								fullWidth
-								id="recipe_name"
-								label="Recipe Name"
-								name="recipe_name"
-								autoComplete="recipe_name"
-                                value={formData.recipe_name}
-								onChange={handleChange}
-							/>
-						</Grid>
-                        <Grid item xs={12}>
-							<TextField
-								variant="outlined"
-                                type="text"
-								required
-								fullWidth
-								id="photo"
-								label="Photo"
-								name="photo"
-								autoComplete="photo"
-                                value={formData.photo}
-								onChange={handleChange}
-							/>
-						</Grid>
-                        <Grid item xs={12}>
-							<TextField
-								variant="outlined"
-                                type="text"
-								required
-								fullWidth
-								id="life_story"
-								label="Life Story"
-								name="life_story"
-								autoComplete="life_story"
-                                value={formData.life_story}
-								onChange={handleChange}
-							/>
-						</Grid>
-                        <Grid item xs={12}>
-							<TextField
-								variant="outlined"
-                                type="number"
-								required
-								fullWidth
-								id="prep_time"
-								label="Prep Time"
-								name="prep_time"
-								autoComplete="prep_time"
-                                value={formData.prep_time}
-								onChange={handleChange}
-							/>
-						</Grid>
-                        <Grid item xs={12}>
-							<TextField
-								variant="outlined"
-                                type="number"
-								required
-								fullWidth
-								id="cook_time"
-								label="Cook Time"
-								name="cook_time"
-								autoComplete="cook_time"
-                                value={formData.cook_time}
-								onChange={handleChange}
-							/>
-						</Grid>
-                        <Grid item xs={12}>
-							<TextField
-								variant="outlined"
-                                type="number"
-								required
-								fullWidth
-								id="servings"
-								label="Servings"
-								name="servings"
-								autoComplete="servings"
-                                value={formData.servings}
-								onChange={handleChange}
-							/>
-						</Grid>
-                        <Grid item xs={12}>
-							<TextField
-								variant="outlined"
-                                type="text"
-								required
-								fullWidth
-								id="ingredients"
-								label="Ingredients"
-								name="ingredients"
-								autoComplete="ingredients"
-                                value={formData.ingredients}
-								onChange={handleChange}
-							/>
-						</Grid>
-                        <Grid item xs={12}>
-							<TextField
-								variant="outlined"
-                                type="text"
-								required
-								fullWidth
-								id="equipment"
-								label="Equipment"
-								name="equipment"
-								autoComplete="equipment"
-                                value={formData.equipment}
-								onChange={handleChange}
-							/>
-						</Grid>
-                        <Grid item xs={12}>
-							<TextField
-								variant="outlined"
-                                type="text"
-								required
-								fullWidth
-								id="directions"
-								label="Directions"
-								name="directions"
-								autoComplete="directions"
-                                value={formData.directions}
-								onChange={handleChange}
-							/>
-						</Grid>
-                        <Grid item xs={12}>
-							<TextField
-								variant="outlined"
-                                type="number"
-								required
-								fullWidth
-								id="rating"
-								label="Rating"
-								name="rating"
-								autoComplete="rating"
-                                value={formData.rating}
-								onChange={handleChange}
-							/>
-						</Grid>
-					</Grid>
-					<Button
-						type="submit"
-						fullWidth
-						variant="contained"
-						color="primary"
-						className={classes.submit}
-						onClick={handleSubmit}
-					>
-						Submit Recipe
-					</Button>
-				</form>
-			</div>
-		</Container>
-	);
-}
+    return (
+        <React.Fragment>
+            <form 
+                className="max-w-xl m-auto py-10 mt-10 mb-10 px-12 border"
+                onSubmit={handleSubmit(onFormSubmit, onErrors)}
+            >
+                <h1 className="text-center text-4xl font-semibold mt-10">Edit Recipe</h1>
+                <div>
+                    <label className="text-gray-600 font-medium block mt-4">Recipe Name</label>
+                    <input 
+                        className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700"
+                        name="recipe_name"
+                        {...register('recipe_name', { required: { value: true, message: "This field is required"}})} 
+                    />
+                    {errors.recipe_name && (
+                    <div className="mb-3 text-normal text-red-500">
+                        {errors.recipe_name.message}
+                    </div>
+                    )}
+                </div>
+                <div>
+                    <label className="text-gray-600 font-medium block mt-4">Photo</label>
+                    <input 
+                        className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700"
+                        name="photo"
+                        type="file"
+                        accept="image/jpeg,image/png,image/gif" 
+                        {...register('photo', { required: { value: true, message: "This field is required"}})} 
+                    />
+                    {errors.photo && (
+                    <div className="mb-3 text-normal text-red-500">
+                        {errors.photo.message}
+                    </div>
+                    )}
+                </div>
+                <div>
+                    <label className="text-gray-600 font-medium block mt-4">Life Story</label>
+                    <textarea 
+                        className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
+                        name="life_story"
+                        rows={5}
+                        {...register('life_story', { required: { value: true, message: "This field is required"}})} 
+                    />
+                    {errors.life_story && (
+                    <div className="mb-3 text-normal text-red-500">
+                        {errors.life_story.message}
+                    </div>
+                    )}
+                </div>
+                <div>
+                    <label className="text-gray-600 font-medium block mt-4">Prep Time</label>
+                    <input 
+                        className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
+                        name="prep_time"
+                        type="number"
+                        {...register('prep_time', { required: { value: true, message: "This field is required"}, min: { value: 0, message: "Prep time cannot be below zero minutes!" }})} 
+                    />
+                    {errors.prep_time && (
+                    <div className="mb-3 text-normal text-red-500">
+                        {errors.prep_time.message}
+                    </div>
+                    )}
+                </div>
+                <div>
+                    <label className="text-gray-600 font-medium block mt-4">Cook Time</label>
+                    <input 
+                        className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
+                        name="cook_time"
+                        type="number"
+                        {...register('cook_time', { required: { value: true, message: "This field is required"}, min: { value: 0, message: "Cook time cannot be below zero minutes!"}})} 
+                    />
+                    {errors.cook_time && (
+                    <div className="mb-3 text-normal text-red-500">
+                        {errors.cook_time.message}
+                    </div>
+                    )}
+                </div>
+                <div>
+                    <label className="text-gray-600 font-medium block mt-4">Servings</label>
+                    <input 
+                        className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
+                        name="servings"
+                        type="number"
+                        {...register('servings', { required: { value: true, message: "This field is required"}, min: { value: 0, message: "Servings cannot be below zero!" }})} 
+                    />
+                    {errors.servings && (
+                    <div className="mb-3 text-normal text-red-500">
+                        {errors.servings.message}
+                    </div>
+                    )}
+                </div>
+                <div>
+                    <label className="text-gray-600 font-medium block mt-4">Ingredients</label>
+                    <textarea 
+                        className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
+                        name="ingredients"
+                        rows={5} 
+                        {...register('ingredients', { required: { value: true, message: "This field is required"}})} 
+                    />
+                    {errors.ingredients && (
+                    <div className="mb-3 text-normal text-red-500">
+                        {errors.ingredients.message}
+                    </div>
+                    )}
+                </div>
+                <div>
+                    <label className="text-gray-600 font-medium block mt-4">Equipment</label>
+                    <textarea 
+                        className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
+                        name="equipment"
+                        rows={5}
+                        {...register('equipment', { required: { value: true, message: "This field is required"}})} 
+                    />
+                    {errors.equipment && (
+                    <div className="mb-3 text-normal text-red-500">
+                        {errors.equipment.message}
+                    </div>
+                    )}
+                </div>
+                <div>
+                    <label className="text-gray-600 font-medium block mt-4">Directions</label>
+                    <textarea 
+                        className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
+                        name="directions"
+                        rows={5} 
+                        {...register('directions', { required: { value: true, message: "This field is required"}})} 
+                    />
+                    {errors.directions && (
+                    <div className="mb-3 text-normal text-red-500">
+                        {errors.directions.message}
+                    </div>
+                    )}
+                </div>
+                <div>
+                    <label className="text-gray-600 font-medium block mt-4">Published Date</label>
+                    <input 
+                        className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
+                        name="published_date" 
+                        {...register('published_date', { required: { value: true, message: "This field is required"}})} 
+                    />
+                    {errors.published_date && (
+                    <div className="mb-3 text-normal text-red-500">
+                        {errors.published_date.message}
+                    </div>
+                    )}
+                </div>
+                <div>
+                    <label className="text-gray-600 font-medium block mt-4">Updated Date</label>
+                    <input 
+                        className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
+                        name="updated_date" 
+                        {...register('updated_date', { required: { value: true, message: "This field is required"}})} 
+                    />
+                    {errors.updated_date && (
+                    <div className="mb-3 text-normal text-red-500">
+                        {errors.updated_date.message}
+                    </div>
+                    )}
+                </div>
+                <div>
+                    <label className="text-gray-600 font-medium block mt-4">Rating</label>
+                    <input 
+                        className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
+                        name="rating" 
+                        {...register('rating', { required: { value: true, message: "This field is required"}})} 
+                    />
+                    {errors.rating && (
+                    <div className="mb-3 text-normal text-red-500">
+                        {errors.rating.message}
+                    </div>
+                    )}
+                </div>
+                <button
+                    className="mt-4 w-full bg-blue-400 hover:bg-blue-600 text-blue-100 border py-3 px-6 font-semibold text-md rounded"
+                    type="submit"
+                >
+                    Submit
+                </button>
+            </form>
+        </React.Fragment>
+    );
+};

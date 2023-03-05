@@ -15,7 +15,6 @@ import AllRecipes from './components/AllRecipes';
 import Recipe from './components/Recipe';
 import EditRecipe from './components/EditRecipe';
 import CreateRecipe from './components/CreateRecipe';
-import NewRecipe from './components/NewRecipe';
 
 import './index.css';
 
@@ -35,7 +34,7 @@ function App() {
                     <Route exact path="/logout" element={<Logout />} />
                     <Route exact path="/profile" />
 
-                    <Route exact path="/recipe/new" element={<NewRecipe />} />
+                    <Route exact path="/recipe/new" element={<CreateRecipe />} />
                     <Route exact path="/recipes/all" element={<AllRecipes />} />
                     <Route exact path="/recipe/:id" element={<Recipe />} />
                     <Route exact path="/recipe/edit/:id" element={<EditRecipe />} />
