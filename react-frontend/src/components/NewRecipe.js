@@ -1,10 +1,40 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import axiosInstance from '../axios';
   
 
 export default function NewRecipe() {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const onFormSubmit = (data) => console.log(data);
+
+    const onFormSubmit = (data) => { 
+        console.log(data);
+        const formData = new FormData();
+        formData.append('photo', data.photo[0]);
+        formData.append('recipe_name', data.recipe_name);
+        formData.append('life_story', data.life_story);
+        formData.append('prep_time', data.prep_time);
+        formData.append('cook_time', data.cook_time);
+        formData.append('servings', data.servings);
+        formData.append('ingredients', data.ingredients);
+        formData.append('equipment', data.equipment);
+        formData.append('directions', data.directions);
+        formData.append('published_date', data.published_date);
+        formData.append('updated_date', data.updated_date);
+        formData.append('rating', data.rating);
+
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data',
+                'Authorization': localStorage.getItem('access_token') ?
+                'Bearer ' + localStorage.getItem('access_token') :
+                null,
+            },
+        };
+        axiosInstance.post('/recipes/', formData, config).then((response) => {
+            console.log(response.data);
+        });
+    };
+
     const onErrors = (errors) => console.error(errors);
 
     return (
