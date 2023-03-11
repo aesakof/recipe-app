@@ -85,7 +85,7 @@ export default function EditRecipe() {
     return (
         <React.Fragment>
             <form 
-                className="max-w-xl m-auto py-10 mt-10 mb-10 px-12 border"
+                className="max-w-2xl m-auto py-10 mt-10 mb-10 px-12 border"
                 onSubmit={handleSubmit(onFormSubmit, onErrors)}
             >
                 <h1 className="text-center text-4xl font-semibold mt-10">Edit Recipe</h1>
