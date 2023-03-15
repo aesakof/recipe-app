@@ -25,7 +25,8 @@ export default function AllRecipes() {
                 recipe === null ?
                 <h5>Loading recipes data...</h5> :
                 <div className="max-w-4xl m-auto py-10 mt-10 mb-10 px-12 border">
-                    <h1>{recipe.recipe_name}</h1>
+                    <h1 className="text-center text-7xl font-bold">{recipe.recipe_name}</h1>
+                    <p className="text-center text-sm">Recipe by: {recipe.username} | Published: {recipe.published_date} Updated: {recipe.updated_date}</p>
                     
                     {   
                         username !== recipe.username ?
@@ -52,8 +53,7 @@ export default function AllRecipes() {
                         </>
                     }
 
-                    <p>Author: {recipe.username}</p>
-                    <p>Photo: <img src={recipe.photo}/></p>
+                    <p><img src={recipe.photo}/></p>
                     <p>Life Story: {recipe.life_story}</p>
                     <p>Prep Time: {recipe.prep_time}</p>
                     <p>Cook Time: {recipe.cook_time}</p>
