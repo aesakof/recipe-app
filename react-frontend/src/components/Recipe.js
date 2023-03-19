@@ -24,7 +24,7 @@ export default function AllRecipes() {
             {
                 recipe === null ?
                 <h5>Loading recipes data...</h5> :
-                <div className="max-w-4xl m-auto py-10 mt-10 mb-10 px-12 border">
+                <div className="max-w-4xl m-auto py-10 mt-10 mb-10 px-12 border bg-white rounded-md">
                     <h1 className="text-center text-7xl font-bold">{recipe.recipe_name}</h1>
                     <p className="text-center text-sm">Recipe by: {recipe.username} | Published: {recipe.published_date} Updated: {recipe.updated_date}</p>
                     
@@ -53,16 +53,30 @@ export default function AllRecipes() {
                         </>
                     }
 
-                    <p><img src={recipe.photo}/></p>
+                    <img src={recipe.photo}/>
+
+                    <label className="text-2xl font-bold font-medium block mt-5">Life Story</label>
                     <p>Life Story: {recipe.life_story}</p>
+
+                    <label className="text-2xl font-bold font-medium block mt-5">Prep Time</label>
                     <p>Prep Time: {recipe.prep_time}</p>
+
+                    <label className="text-2xl font-bold font-medium block mt-5">Cook Time</label>
                     <p>Cook Time: {recipe.cook_time}</p>
+
+                    <label className="text-2xl font-bold font-medium block mt-5">Servings</label>
                     <p>Servings: {recipe.servings}</p>
+
+                    <label className="text-2xl font-bold font-medium block mt-5">Ingredients</label>
                     <p>Ingredients: {recipe.ingredients}</p>
+
+                    <label className="text-2xl font-bold font-medium block mt-5">Equipment</label>
                     <p>Equipment: {recipe.equipment}</p>
+
+                    <label className="text-2xl font-bold font-medium block mt-5">Directions</label>
                     <p>Directions: {recipe.directions}</p>
-                    <p>Published: {recipe.published_date}</p>
-                    <p>Last Updated: {recipe.updated_date}</p>
+
+                    <label className="text-2xl font-bold font-medium block mt-5">Rating</label>
                     <p>Rating: {recipe.rating}</p>
                 </div>
             }

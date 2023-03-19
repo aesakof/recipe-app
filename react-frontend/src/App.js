@@ -26,7 +26,7 @@ function App() {
             {/* <Header /> */}
             <Navbar />
 
-            <div style={{paddingTop: '80px'}}>
+            <div className='bg-sky-700 pt-20'>
                 <Routes>
                     <Route exact path="/" element={<Home />} />
                     <Route exact path="/register" element={<Register />} />
