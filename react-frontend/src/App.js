@@ -21,12 +21,12 @@ import './index.css';
 
 function App() {
     return (
-        <div style={{backgroundColor: 'white'}}>
+        <div>
             <CssBaseline />
             {/* <Header /> */}
             <Navbar />
 
-            <div className='bg-sky-700 pt-20'>
+            <div className='bg-white pt-20 overflow-y-hidden'>
                 <Routes>
                     <Route exact path="/" element={<Home />} />
                     <Route exact path="/register" element={<Register />} />
