@@ -1,147 +1,89 @@
 import React, { useState, useContext } from 'react';
 import axiosInstance from '../axios';
-import { useNavigate, redirect } from 'react-router-dom';
+import { useNavigate, redirect, Link } from 'react-router-dom';
 import { Context } from '../Context';
-//MaterialUI
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import { useForm } from "react-hook-form";
 
-const useStyles = makeStyles((theme) => ({
-	paper: {
-		marginTop: theme.spacing(8),
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-	},
-	avatar: {
-		margin: theme.spacing(1),
-		backgroundColor: theme.palette.secondary.main,
-	},
-	form: {
-		width: '100%', // Fix IE 11 issue.
-		marginTop: theme.spacing(1),
-	},
-	submit: {
-		margin: theme.spacing(3, 0, 2),
-	},
-}));
 
 export default function Login() {
 	const navigate = useNavigate();
-	const initialFormData = Object.freeze({
-		email: '',
-		password: '',
-	});
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
 
-	const [formData, updateFormData] = useState(initialFormData);
     const { username, setUsername } = useContext(Context)
 
-	const handleChange = (e) => {
-		updateFormData({
-			...formData,
-			[e.target.name]: e.target.value.trim(),
-		});
-	};
+    const onFormSubmit = (data) => { 
+        console.log(data);
+        const formData = new FormData();
+        formData.append('email', data.email_address);
+        formData.append('password', data.password);
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		console.log(formData);
-
-		axiosInstance
-			.post(`/token/`, {
-				email: formData.email,
-				password: formData.password,
-			})
-			.then((res) => {
-				localStorage.setItem('access_token', res.data.access);
-				localStorage.setItem('refresh_token', res.data.refresh);
+        axiosInstance
+            .post('/token/', formData)
+            .then((response) => {
+				localStorage.setItem('access_token', response.data.access);
+				localStorage.setItem('refresh_token', response.data.refresh);
 				axiosInstance.defaults.headers['Authorization'] =
 					'Bearer ' + localStorage.getItem('access_token');
 
-                axiosInstance.get(`/user/checkauthuser`).then((res) => {
-                    setUsername(res.data.username)
-                    localStorage.setItem('username', res.data.username)
+                axiosInstance.get(`/user/checkauthuser`).then((response) => {
+                    setUsername(response.data.username)
+                    localStorage.setItem('username', response.data.username)
                 })
 
 				navigate('/');
-                console.log("should have redirected");
-				//console.log(res);
-				//console.log(res.data);
-			});
-	};
+                console.log("should have redirected");            
+            });
+    };
 
-	const classes = useStyles();
+    const onErrors = (errors) => console.error(errors);
 
 	return (
-		<Container component="main" maxWidth="xs">
-			<CssBaseline />
-			<div className={classes.paper}>
-				<Avatar className={classes.avatar}></Avatar>
-				<Typography component="h1" variant="h5">
-					Sign in
-				</Typography>
-				<form className={classes.form} noValidate>
-					<TextField
-						variant="outlined"
-						margin="normal"
-						required
-						fullWidth
-						id="email"
-						label="Email Address"
-						name="email"
-						autoComplete="email"
-						autoFocus
-						onChange={handleChange}
-					/>
-					<TextField
-						variant="outlined"
-						margin="normal"
-						required
-						fullWidth
-						name="password"
-						label="Password"
-						type="password"
-						id="password"
-						autoComplete="current-password"
-						onChange={handleChange}
-					/>
-					<FormControlLabel
-						control={<Checkbox value="remember" color="primary" />}
-						label="Remember me"
-					/>
-					<Button
-						type="submit"
-						fullWidth
-						variant="contained"
-						color="primary"
-						className={classes.submit}
-						onClick={handleSubmit}
-					>
-						Sign In
-					</Button>
-					<Grid container>
-						<Grid item xs>
-							<Link href="#" variant="body2">
-								Forgot password?
-							</Link>
-						</Grid>
-						<Grid item>
-							<Link href="/Register" variant="body2">
-								{"Don't have an account? Sign Up"}
-							</Link>
-						</Grid>
-					</Grid>
-				</form>
-			</div>
-		</Container>
+        <React.Fragment>
+            <form 
+                className="max-w-md m-auto py-10 mt-10 mb-10 px-12 border bg-white rounded-md"
+                onSubmit={handleSubmit(onFormSubmit, onErrors)}
+            >
+                <h1 className="text-center text-4xl font-semibold mt-10">Sign In</h1>
+                <div>
+                    <label className="text-gray-600 font-medium block mt-4">Email Address</label>
+                    <input 
+                        className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700"
+                        name="email_address" 
+                        {...register('email_address', { required: { value: true, message: "This field is required"}})} 
+                    />
+                    {errors.email_address && (
+                    <div className="mb-3 text-normal text-red-500">
+                        {errors.email_address.message}
+                    </div>
+                    )}
+                </div>
+                <div>
+                    <label className="text-gray-600 font-medium block mt-4">Password</label>
+                    <input 
+                        className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
+                        name="password"
+                        type="password"
+                        {...register('password', { required: { value: true, message: "This field is required"}})} 
+                    />
+                    {errors.password && (
+                    <div className="mb-3 text-normal text-red-500">
+                        {errors.password.message}
+                    </div>
+                    )}
+                </div>
+                <Link to="#" className='font-medium text-blue-600 dark:text-blue-500 hover:underline'>
+					Forgot password?
+				</Link>
+                <button
+                    className="mt-4 w-full bg-blue-400 hover:bg-blue-600 text-blue-100 border py-3 px-6 mb-3  font-semibold text-md rounded"
+                    type="submit"
+                >
+                    Submit
+                </button>
+                <Link to="/Register" className='font-medium text-blue-600 dark:text-blue-500 hover:underline'>
+					Don't have an account? Sign Up
+				</Link>
+            </form>
+        </React.Fragment>
 	);
 }
