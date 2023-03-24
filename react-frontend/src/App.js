@@ -2,6 +2,7 @@ import React from 'react';
 import {Routes, Route} from "react-router-dom"
 
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import Register from "./components/Register"
 import Login from "./components/Login"
 import Logout from "./components/Logout"
@@ -21,7 +22,7 @@ import './index.css';
 
 function App() {
     return (
-        <div>
+        <div className='flex flex-col min-h-screen'>
             <CssBaseline />
             {/* <Header /> */}
             <Navbar />
@@ -46,9 +47,7 @@ function App() {
                 </Routes>
             </div>
 
-
-
-            {/* <Footer /> */}
+            <Footer />
         </div>
 
     )
