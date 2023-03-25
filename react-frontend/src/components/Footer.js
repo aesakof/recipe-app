@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 export default function Footer() {
 
     return (
-        <div className="mt-auto bg-sky-700 py-4">
+        <div className="mt-auto bg-neutral-900 text-white py-6">
             <ul className="sm:flex sm:justify-between">
                 <li className="mx-auto">Copyright Alex Esakof 2023 (not actually copyrighted)</li>
-                <li className="mx-auto" href="https://github.com/aesakof/recipe-app"><a>Github Repo</a></li>
+                <li className="mx-auto"><a href="https://github.com/aesakof/recipe-app">Github Repo</a></li>
             </ul>
             
         </div>
