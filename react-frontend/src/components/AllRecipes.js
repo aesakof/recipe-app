@@ -89,7 +89,7 @@ export default function AllRecipes() {
     //     </div>
     //   </div>
         <div>
-            <h1>List of all of the recipes on the site:</h1>
+            <h1 className="text-center text-4xl pt-6">ALL RECIPES</h1>
 
             {
                 recipes === null ?
@@ -98,7 +98,7 @@ export default function AllRecipes() {
                     { recipes.map( (recipe) => (
                         <Link className="" to={'/recipe/' + recipe.id}>
                             <img className="h-72 w-full object-cover" src={recipe.photo}/>
-                            <div className="">
+                            <div className="text-lg font-bold">
                                 {recipe.recipe_name}
                             </div>
                             <div className="">by {recipe.username}</div>

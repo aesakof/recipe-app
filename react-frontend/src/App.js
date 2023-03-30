@@ -22,7 +22,7 @@ import './index.css';
 
 function App() {
     return (
-        <div className='flex flex-col min-h-screen'>
+        <div className='flex flex-col min-h-screen font-poppins'>
             <CssBaseline />
             {/* <Header /> */}
             <Navbar />
