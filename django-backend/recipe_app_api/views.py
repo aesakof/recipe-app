@@ -2,6 +2,7 @@ from rest_framework import generics, viewsets, filters
 from rest_framework.decorators import permission_classes, api_view
 from rest_framework.response import Response
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
+from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from .permissions import IsOwner
 from recipe_app.models import Recipe
@@ -11,9 +12,14 @@ from django.db.models import Sum, Min, Max, Avg, Count, F
 from rest_framework.response import Response
 # from .filters import RecipeFilter
 
+class RecipePagination(PageNumberPagination):
+    page_size = 12
+
+
 
 class RecipeViewSet(viewsets.ModelViewSet):
     serializer_class = RecipeSerializer
+    pagination_class = RecipePagination
     lookup_field = "id"
     filter_backends = [DjangoFilterBackend]
     # filterset_class = RecipeFilter 
