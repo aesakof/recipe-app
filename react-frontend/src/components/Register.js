@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axiosInstance from '../axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
@@ -6,7 +6,10 @@ import { useForm } from "react-hook-form";
 
 export default function SignUp() {
 	const navigate = useNavigate();
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+    const { register, watch, handleSubmit, setValue, formState: { errors } } = useForm();
+
+    const password = useRef({});
+    password.current = watch("password", "");
 
     const onFormSubmit = (data) => { 
         console.log(data);
@@ -63,11 +66,25 @@ export default function SignUp() {
                         className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
                         name="password"
                         type="password"
-                        {...register('password', { required: { value: true, message: "This field is required"}})} 
+                        {...register('password', { required: { value: true, message: "This field is required"}, minLength: { value: 8, message: "Password must have at least 8 characters"}})} 
                     />
                     {errors.password && (
                     <div className="mb-3 text-normal text-red-500">
                         {errors.password.message}
+                    </div>
+                    )}
+                </div>
+                <div>
+                    <label className="text-gray-600 font-medium block mt-4">Confirm Password</label>
+                    <input 
+                        className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
+                        name="confirm_password"
+                        type="password"
+                        {...register('confirm_password', { validate: value => value === password.current || "The passwords do not match"})} 
+                    />
+                    {errors.confirm_password && (
+                    <div className="mb-3 text-normal text-red-500">
+                        {errors.confirm_password.message}
                     </div>
                     )}
                 </div>
