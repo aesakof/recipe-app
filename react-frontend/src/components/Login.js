@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 
 export default function Login() {
 	const navigate = useNavigate();
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+    const { register, handleSubmit, setValue, setError, formState: { errors } } = useForm({ mode: "onSubmit", reValidateMode: "onSubmit"});
 
     const { username, setUsername } = useContext(Context)
 
@@ -32,6 +32,12 @@ export default function Login() {
 
 				navigate('/');
                 console.log("should have redirected");            
+            })
+            .catch((errors) => {
+                setError('bad_credentials', {
+                    type: errors.response.status,
+                    message: "Invalid login credentials. Please enter a valid username and password."
+                })
             });
     };
 
@@ -49,7 +55,13 @@ export default function Login() {
                     <input 
                         className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700"
                         name="email_address" 
-                        {...register('email_address', { required: { value: true, message: "This field is required"}})} 
+                        {...register('email_address', { 
+                            required: { value: true, message: "This field is required"},
+                            pattern: {
+                                value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                message: 'Please enter a valid email',
+                            },
+                        })} 
                     />
                     {errors.email_address && (
                     <div className="mb-3 text-normal text-red-500">
@@ -74,6 +86,11 @@ export default function Login() {
                 <Link to="#" className='font-medium text-blue-600 dark:text-blue-500 hover:underline'>
 					Forgot password?
 				</Link>
+                {errors.bad_credentials && (
+                    <div className="mt-3 text-normal text-red-500">
+                        {errors.bad_credentials.message}
+                    </div>
+                    )}
                 <button
                     className="mt-4 w-full bg-blue-400 hover:bg-blue-600 text-blue-100 border py-3 px-6 mb-3  font-semibold text-md rounded"
                     type="submit"
