@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 
 export default function SignUp() {
 	const navigate = useNavigate();
-    const { register, watch, handleSubmit, setValue, formState: { errors } } = useForm();
+    const { register, watch, handleSubmit, setValue, formState: { errors } } = useForm({ mode: "onBlur", reValidateMode: "onBlur"});
 
     const password = useRef({});
     password.current = watch("password", "");
@@ -25,6 +25,36 @@ export default function SignUp() {
             });
     };
 
+    const checkUsernameExists = (user_name) => {
+        const formData = new FormData();
+        formData.append('user_name', user_name)
+        return axiosInstance
+            .post('/user/checkusernameexists/', formData)
+            .then((response) => {
+                return response.data.isAvailable || "This username is already in use";
+            });
+    };
+
+    const checkEmailExists = (email) => {
+        // console.log(email !== 'aesakof@gmail.com')
+        // return email !== 'aesakof@gmail.com' || "This email address is already in use"
+
+        const formData = new FormData();
+        formData.append('email', email)
+        return axiosInstance
+            .post('/user/checkemailexists/', formData)
+            .then((response) => {
+                return response.data.isAvailable || "This email address is already in use";
+            });
+
+        // const formData = new FormData();
+        // formData.append('email', email)
+        // const response = await axiosInstance
+        //     .post('/user/checkemailexists/', formData);
+        // console.log(response.data.isAvailable);
+        // return response.data.isAvailable || "This email address is already in use";
+    };
+
     const onErrors = (errors) => console.error(errors);
 
 	return (
@@ -39,7 +69,17 @@ export default function SignUp() {
                     <input 
                         className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700"
                         name="email_address" 
-                        {...register('email_address', { required: { value: true, message: "This field is required"}})} 
+                        type= "text"
+                        {...register('email_address', { 
+                            required: { value: true, message: "This field is required"}, 
+                            validate: {
+                                checkEmailExists: (value) => checkEmailExists(value),
+                            },
+                            pattern: {
+                                value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                message: 'Please enter a valid email',
+                            },
+                        })}
                     />
                     {errors.email_address && (
                     <div className="mb-3 text-normal text-red-500">
@@ -52,7 +92,12 @@ export default function SignUp() {
                     <input 
                         className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700"
                         name="username" 
-                        {...register('username', { required: { value: true, message: "This field is required"}})} 
+                        {...register('username', { 
+                            required: { value: true, message: "This field is required"},
+                            validate: {
+                                checkUsernameExists: (value) => checkUsernameExists(value),
+                            }
+                        })} 
                     />
                     {errors.username && (
                     <div className="mb-3 text-normal text-red-500">

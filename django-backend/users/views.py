@@ -28,11 +28,11 @@ def CheckEmailExists(request):
     email = request.data.get('email')
     if AppUser.objects.filter(email=email):
         return Response({
-            "isAvailable": "false"
+            "isAvailable": False
         })
     else:
         return Response({
-            "isAvailable": "true"
+            "isAvailable": True
         })
 
 
@@ -41,11 +41,11 @@ def CheckUsernameExists(request):
     user_name = request.data.get('user_name')
     if AppUser.objects.filter(user_name=user_name):
         return Response({
-            "isAvailable": "false"
+            "isAvailable": False
         })
     else:
         return Response({
-            "isAvailable": "true"
+            "isAvailable": True
         })
 
 
