@@ -10,7 +10,8 @@ import Moment from 'moment';
 
 
 export default function EditRecipe() {
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+    const { register, watch, handleSubmit, setValue, getValues, formState: { errors } } = useForm();
+    const watchPhoto = watch('photo');
 
     const navigate = useNavigate();
     const { id } = useParams();
@@ -36,6 +37,7 @@ export default function EditRecipe() {
 
     useEffect(() => {
         axiosInstance.get('/recipes/' + id).then((res) => {
+            console.log(res.data);
             setValue('recipe_name', res.data.recipe_name)
             setValue('photo', res.data.photo)
             setValue('life_story', res.data.life_story)
@@ -72,7 +74,7 @@ export default function EditRecipe() {
             },
         };
         axiosInstance.put('/recipes/' + id + '/', formData, config).then((response) => {
-            console.log(response.data);
+            navigate('/recipe/' + id);
         });
     };
 
@@ -107,6 +109,7 @@ export default function EditRecipe() {
                         accept="image/jpeg,image/png,image/gif" 
                         {...register('photo', { required: { value: true, message: "This field is required"}})} 
                     />
+                    {/* {watchPhoto && <img src={URL.createObjectURL(getValues("photo"))}/>} */}
                     {errors.photo && (
                     <div className="mb-3 text-normal text-red-500">
                         {errors.photo.message}

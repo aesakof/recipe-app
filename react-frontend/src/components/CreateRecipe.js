@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../axios';
   
 
 export default function CreateRecipe() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, watch, getValues, formState: { errors } } = useForm();
+    const navigate = useNavigate();
+    const watchPhoto = watch('photo');
+
+    const [picture, setPicture] = useState(null);
+
+    const onChangePicture = (e) => {
+        console.log(e.target.files);
+        setPicture(URL.createObjectURL(e.target.files[0]));
+    }
 
     const onFormSubmit = (data) => { 
         console.log(data);
@@ -30,6 +40,7 @@ export default function CreateRecipe() {
         };
         axiosInstance.post('/recipes/', formData, config).then((response) => {
             console.log(response.data);
+            navigate('/recipe/' + response.data.id);
         });
     };
 
@@ -62,8 +73,12 @@ export default function CreateRecipe() {
                         name="photo"
                         type="file"
                         accept="image/jpeg,image/png,image/gif" 
-                        {...register('photo', { required: { value: true, message: "This field is required"}})} 
+                        {...register('photo', { 
+                            required: { value: true, message: "This field is required"},
+                            onChange: (e) => {onChangePicture(e)}
+                        })} 
                     />
+                    <img src={picture} alt="" />
                     {errors.photo && (
                     <div className="mb-3 text-normal text-red-500">
                         {errors.photo.message}
