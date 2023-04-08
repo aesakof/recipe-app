@@ -26,7 +26,7 @@ export default function AllRecipes() {
                 <h5>Loading recipes data...</h5> :
                 <div className="max-w-4xl m-auto py-10 mt-10 mb-10 px-12 border bg-white rounded-md">
                     <h1 className="text-center text-7xl font-bold">{recipe.recipe_name}</h1>
-                    <p className="text-center text-sm">Recipe by: {recipe.username} | Published: {recipe.published_date} Updated: {recipe.updated_date}</p>
+                    <p className="text-center text-sm">Recipe by: {recipe.username} | Published: {recipe.date_published} Updated: {recipe.date_last_updated}</p>
                     
                     {   
                         username !== recipe.username ?

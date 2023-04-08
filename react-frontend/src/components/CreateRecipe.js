@@ -18,8 +18,6 @@ export default function CreateRecipe() {
         formData.append('ingredients', data.ingredients);
         formData.append('equipment', data.equipment);
         formData.append('directions', data.directions);
-        formData.append('published_date', data.published_date);
-        formData.append('updated_date', data.updated_date);
         formData.append('rating', data.rating);
 
         const config = {
@@ -167,32 +165,6 @@ export default function CreateRecipe() {
                     {errors.directions && (
                     <div className="mb-3 text-normal text-red-500">
                         {errors.directions.message}
-                    </div>
-                    )}
-                </div>
-                <div>
-                    <label className="text-gray-600 font-medium block mt-4">Published Date</label>
-                    <input 
-                        className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
-                        name="published_date" 
-                        {...register('published_date', { required: { value: true, message: "This field is required"}})} 
-                    />
-                    {errors.published_date && (
-                    <div className="mb-3 text-normal text-red-500">
-                        {errors.published_date.message}
-                    </div>
-                    )}
-                </div>
-                <div>
-                    <label className="text-gray-600 font-medium block mt-4">Updated Date</label>
-                    <input 
-                        className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
-                        name="updated_date" 
-                        {...register('updated_date', { required: { value: true, message: "This field is required"}})} 
-                    />
-                    {errors.updated_date && (
-                    <div className="mb-3 text-normal text-red-500">
-                        {errors.updated_date.message}
                     </div>
                     )}
                 </div>

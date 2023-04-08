@@ -10,11 +10,11 @@ from .serializers import RecipeSerializer
 from django.shortcuts import get_object_or_404
 from django.db.models import Sum, Min, Max, Avg, Count, F
 from rest_framework.response import Response
+from datetime import date
 # from .filters import RecipeFilter
 
 class RecipePagination(PageNumberPagination):
     page_size = 12
-
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -29,6 +29,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+        # serializer.save(published_date=date.today())
+        # serializer.save(updated_date=date.today())
+
+    def perform_update(self, serializer):
+        serializer.save(updated_date=date.today())
 
     def get_permissions(self):
         if self.action in ['update', 'partial_update', 'destroy']: # also retrieve

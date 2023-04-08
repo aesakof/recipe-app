@@ -1,6 +1,8 @@
 from django.db import models
 from django.forms import IntegerField
 from django.conf import settings
+from django.utils import timezone
+from datetime import date
 
 # Create your models here.
 
@@ -21,8 +23,8 @@ class Recipe(models.Model):
     ingredients = models.CharField(max_length=500)
     equipment = models.CharField(max_length=500)
     directions = models.CharField(max_length=500)
-    published_date = models.DateField()
-    updated_date = models.DateField()
+    published_date = models.DateField(default=date.today)
+    updated_date = models.DateField(default=date.today)
     rating = models.IntegerField()
     objects = models.Manager() # default manager
-    recipeobjects = RecipeObjects() # custom manager
+    recipeobjects = RecipeObjects() # custom manager 
