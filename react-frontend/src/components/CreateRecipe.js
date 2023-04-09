@@ -7,7 +7,6 @@ import axiosInstance from '../axios';
 export default function CreateRecipe() {
     const { register, handleSubmit, watch, getValues, formState: { errors } } = useForm();
     const navigate = useNavigate();
-    const watchPhoto = watch('photo');
 
     const [picture, setPicture] = useState(null);
 
@@ -19,7 +18,9 @@ export default function CreateRecipe() {
     const onFormSubmit = (data) => { 
         console.log(data);
         const formData = new FormData();
-        formData.append('photo', data.photo[0]);
+        if(data.photo.length >= 1) {
+            formData.append('photo', data.photo[0]);
+        }
         formData.append('recipe_name', data.recipe_name);
         formData.append('life_story', data.life_story);
         formData.append('prep_time', data.prep_time);
@@ -74,7 +75,7 @@ export default function CreateRecipe() {
                         type="file"
                         accept="image/jpeg,image/png,image/gif" 
                         {...register('photo', { 
-                            required: { value: true, message: "This field is required"},
+                            // required: { value: true, message: "This field is required"},
                             onChange: (e) => {onChangePicture(e)}
                         })} 
                     />

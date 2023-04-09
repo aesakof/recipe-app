@@ -31,9 +31,9 @@ export default function AllRecipes() {
                     {   
                         username !== recipe.username ?
                         <></> :
-                        <button className="mt-4 bg-blue-400 hover:bg-blue-600 text-blue-100 border py-3 px-6 font-semibold text-md rounded">
-                            <Link to={'/recipe/edit/' + recipe.id}>Edit Recipe</Link>
-                        </button>
+                        <Link to={'/recipe/edit/' + recipe.id} className="mt-4 bg-blue-400 hover:bg-blue-600 text-blue-100 border py-3 px-6 font-semibold text-md rounded">
+                            Edit Recipe
+                        </Link>
                     }
                     {
                         username !== recipe.username ?

@@ -5,41 +5,41 @@ import { Context } from '../Context';
 import { useForm } from "react-hook-form";
 
 import 'date-fns';
-import DateFnsUtils from '@date-io/date-fns';
-import Moment from 'moment';
 
 
 export default function EditRecipe() {
     const { register, watch, handleSubmit, setValue, getValues, formState: { errors } } = useForm();
     const watchPhoto = watch('photo');
 
+    const [picture, setPicture] = useState(null);
+
+    const onChangePicture = (e) => {
+        // console.log(picture);
+        // console.log(e.target.files);
+        if(e.target.files.length !== 0) {
+            setPicture(URL.createObjectURL(e.target.files[0]));
+            console.log((e.target.files[0]))
+        } else {
+            setValue('photo', URLtoBlob(picture))
+        }
+    }
+
+    const URLtoBlob = async (url) => {
+        const res = await fetch(url);
+        const blob = res.blob();
+        const file = new File([blob], 'image', { type: blob.type });
+        return file;
+    }
+
     const navigate = useNavigate();
     const { id } = useParams();
-	const blankFormData = {
-        recipe_name: '',
-        username: '',
-        photo: '',
-        life_story: '',
-        prep_time: '',
-        cook_time: '',
-        servings: '',
-        ingredients: '',
-        equipment: '',
-        directions: '',
-        published_date: Moment().format('YYYY-MM-DD 12:00:00'),
-        updated_date: Moment().format('YYYY-MM-DD 12:00:00'),
-        rating: ''
-    };
-
-	const [initialFormData, setInitialFormData] = useState(blankFormData);
 
     const { username } = useContext(Context);
 
     useEffect(() => {
         axiosInstance.get('/recipes/' + id).then((res) => {
-            console.log(res.data);
             setValue('recipe_name', res.data.recipe_name)
-            setValue('photo', res.data.photo)
+            setPicture(res.data.photo)
             setValue('life_story', res.data.life_story)
             setValue('prep_time', res.data.prep_time)
             setValue('cook_time', res.data.cook_time)
@@ -54,7 +54,9 @@ export default function EditRecipe() {
     const onFormSubmit = (data) => { 
         console.log(data);
         const formData = new FormData();
-        formData.append('photo', data.photo[0]);
+        if(data.photo.length >= 1) {
+            formData.append('photo', data.photo[0]);
+        }
         formData.append('recipe_name', data.recipe_name);
         formData.append('life_story', data.life_story);
         formData.append('prep_time', data.prep_time);
@@ -73,7 +75,7 @@ export default function EditRecipe() {
                 null,
             },
         };
-        axiosInstance.put('/recipes/' + id + '/', formData, config).then((response) => {
+        axiosInstance.patch('/recipes/' + id + '/', formData, config).then((response) => {
             navigate('/recipe/' + id);
         });
     };
@@ -107,8 +109,12 @@ export default function EditRecipe() {
                         name="photo"
                         type="file"
                         accept="image/jpeg,image/png,image/gif" 
-                        {...register('photo', { required: { value: true, message: "This field is required"}})} 
+                        {...register('photo', { 
+                            // required: { value: true, message: "This field is required"},
+                            onChange: (e) => {onChangePicture(e)}
+                        })} 
                     />
+                    <img src={picture} alt="" />
                     {/* {watchPhoto && <img src={URL.createObjectURL(getValues("photo"))}/>} */}
                     {errors.photo && (
                     <div className="mb-3 text-normal text-red-500">
