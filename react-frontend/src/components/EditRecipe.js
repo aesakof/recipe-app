@@ -114,7 +114,9 @@ export default function EditRecipe() {
                             onChange: (e) => {onChangePicture(e)}
                         })} 
                     />
-                    <img src={picture} alt="" />
+                    {picture && <div className="aspect-w-3 aspect-h-2">
+                        <img className="object-cover" src={picture}/>
+                    </div>}
                     {/* {watchPhoto && <img src={URL.createObjectURL(getValues("photo"))}/>} */}
                     {errors.photo && (
                     <div className="mb-3 text-normal text-red-500">

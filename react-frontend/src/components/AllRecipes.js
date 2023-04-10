@@ -13,7 +13,7 @@ export default function AllRecipes() {
 
     useEffect(() => {
         axiosInstance.get('/recipes/?page=' + page ).then((res) => {
-            setRecipes(res.data.results);
+            setRecipes([...recipes, ...res.data.results]);
             setPrev(res.data.previous);
             setNext(res.data.next);
         });
@@ -29,8 +29,8 @@ export default function AllRecipes() {
                 <div>
                     <div className="px-20 pt-10 pb-3 grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         { recipes.map( (recipe) => (
-                            <Link className="h-96 border" to={'/recipe/' + recipe.id}>
-                                <img className="h-72 w-full object-cover" src={recipe.photo}/>
+                            <Link className="h-80 border" to={'/recipe/' + recipe.id}>
+                                <img className="h-56 w-full object-cover" src={recipe.photo}/>
                                 <div className="text-lg font-bold mt-3">
                                     {recipe.recipe_name}
                                 </div>
@@ -39,18 +39,16 @@ export default function AllRecipes() {
                         )) }
                     </div>
                     <div className="text-center pb-3">
-                        {/* {prev && <button className="mt-4 bg-neutral-400 hover:bg-neutral-600 text-neutral-100 border py-3 px-6 font-semibold text-md rounded">First</button>} */}
-                        {prev && 
+                        {/* {prev && 
                             <button onClick={() => setPage(page-1)} className="mt-4 bg-neutral-400 hover:bg-neutral-600 text-neutral-100 border py-3 px-6 font-semibold text-md rounded">
                                 <Link>Previous</Link>
                             </button>
-                        }
+                        } */}
                         {next && 
                             <button onClick={() => setPage(page+1)} className="mt-4 bg-neutral-400 hover:bg-neutral-600 text-neutral-100 border py-3 px-6 font-semibold text-md rounded">
-                                <Link>Next</Link>
+                                <Link>Load More</Link>
                             </button>
                         }
-                        {/* {next && <button className="mt-4 bg-neutral-400 hover:bg-neutral-600 text-neutral-100 border py-3 px-6 font-semibold text-md rounded">Last</button>} */}
                     </div>
                 </div>
                

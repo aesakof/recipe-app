@@ -52,8 +52,9 @@ export default function AllRecipes() {
                             }
                         </>
                     }
-
-                    <img src={recipe.photo}/>
+                    <div className="aspect-w-3 aspect-h-2">
+                        <img className="object-cover" src={recipe.photo}/>
+                    </div>
 
                     <label className="text-2xl font-bold font-medium block mt-5">Life Story</label>
                     <p>Life Story: {recipe.life_story}</p>

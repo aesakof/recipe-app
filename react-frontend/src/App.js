@@ -11,7 +11,6 @@ import Home from "./components/Home"
 // import PageNotFound from './components/PageNotFound';
 // import Profile from './components/Profile';
 
-import CssBaseline from '@material-ui/core/CssBaseline';
 import AllRecipes from './components/AllRecipes';
 import Recipe from './components/Recipe';
 import EditRecipe from './components/EditRecipe';
@@ -23,7 +22,6 @@ import './index.css';
 function App() {
     return (
         <div className='flex flex-col min-h-screen font-poppins'>
-            <CssBaseline />
             {/* <Header /> */}
             <Navbar />
 

@@ -79,7 +79,9 @@ export default function CreateRecipe() {
                             onChange: (e) => {onChangePicture(e)}
                         })} 
                     />
-                    <img src={picture} alt="" />
+                    {picture && <div className="aspect-w-3 aspect-h-2">
+                        <img className="object-cover" src={picture}/>
+                    </div>}
                     {errors.photo && (
                     <div className="mb-3 text-normal text-red-500">
                         {errors.photo.message}

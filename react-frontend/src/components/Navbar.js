@@ -20,7 +20,7 @@ export default function Navbar() {
     }
 
     return(
-        <div className='shadow-md w-full fixed top-0 left-0'>
+        <div className='shadow-md w-full fixed top-0 left-0 z-[5]'>
             <div className='md:flex items-center justify-between bg-neutral-900 py-6 md:px-10 px-7'>
                 <div className='font-bold text-2xl cursor-pointer flex items-center text-white'>
                     THE RECIPE APP
