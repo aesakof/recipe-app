@@ -29,12 +29,12 @@ export default function AllRecipes() {
                 <div>
                     <div className="px-20 pt-10 pb-3 grid grid-cols-1 gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         { recipes.map( (recipe) => (
-                            <Link className="h-80 border" to={'/recipe/' + recipe.id}>
+                            <Link className="group h-80 border" to={'/recipe/' + recipe.id}>
                                 <img className="h-56 w-full object-cover" src={recipe.photo}/>
-                                <div className="text-lg font-bold mt-3">
+                                <div className="text-lg font-bold mt-3 group-hover:underline">
                                     {recipe.recipe_name}
                                 </div>
-                                <div className="">by {recipe.username}</div>
+                                <div className="disabled:hover">by {recipe.username}</div>
                             </Link>
                         )) }
                     </div>
