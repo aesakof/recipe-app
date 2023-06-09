@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.query import QuerySet
 from django.forms import IntegerField
 from django.conf import settings
 from django.utils import timezone
@@ -25,6 +26,21 @@ class Recipe(models.Model):
     directions = models.CharField(max_length=500)
     published_date = models.DateField(default=date.today)
     updated_date = models.DateField(default=date.today)
-    rating = models.IntegerField()
+    # rating = models.IntegerField()
     objects = models.Manager() # default manager
-    recipeobjects = RecipeObjects() # custom manager 
+    recipeobjects = RecipeObjects() # custom manager
+
+
+class Rating(models.Model):
+
+    # class RatingObjects(models.Manager):
+    #     def get_queryset(self):
+    #         return super().get_queryset()
+        
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    rating = models.IntegerField()
+    comment = models.CharField(max_length=500)
+    recipe = models.ForeignKey(Recipe,on_delete=models.CASCADE, related_name='ratings')
+    published_date = models.DateField(default=date.today)
+    # updated_date = models.DateField(default=date.today)
+    # photo = models.ImageField(upload_to='images/', blank=True)
