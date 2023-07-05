@@ -17,6 +17,7 @@ import EditRecipe from './components/EditRecipe';
 import CreateRecipe from './components/CreateRecipe';
 
 import './index.css';
+import '@smastrom/react-rating/style.css'
 
 
 function App() {

@@ -39,7 +39,7 @@ class Rating(models.Model):
         
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     rating = models.IntegerField()
-    comment = models.CharField(max_length=500)
+    review = models.CharField(max_length=500)
     recipe = models.ForeignKey(Recipe,on_delete=models.CASCADE, related_name='ratings')
     published_date = models.DateField(default=date.today)
     # updated_date = models.DateField(default=date.today)

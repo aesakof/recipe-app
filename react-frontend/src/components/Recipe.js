@@ -15,7 +15,6 @@ export default function AllRecipes() {
     const [ recipe, setRecipe ] = useState([]);
     const [ isLoading, setIsLoading ] = useState(true);
     const { id } = useParams();
-    const navigate = useNavigate();
 
     const [ showDeleteModal, setShowDeleteModal ] = useState(false);
     const [ showImageModal, setShowImageModal ] = useState(false);
@@ -26,41 +25,6 @@ export default function AllRecipes() {
             setIsLoading(false);
         });
     }, [])
-
-    const { register, handleSubmit, watch, getValues, formState: { errors } } = useForm();
-
-
-    const onFormSubmit = (data) => { 
-        console.log(data);
-        const formData = new FormData();
-        if(data.photo.length >= 1) {
-            formData.append('photo', data.photo[0]);
-        }
-        formData.append('recipe_name', data.recipe_name);
-        formData.append('life_story', data.life_story);
-        formData.append('prep_time', data.prep_time);
-        formData.append('cook_time', data.cook_time);
-        formData.append('servings', data.servings);
-        formData.append('ingredients', data.ingredients);
-        formData.append('equipment', data.equipment);
-        formData.append('directions', data.directions);
-        formData.append('rating', data.rating);
-
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data',
-                'Authorization': localStorage.getItem('access_token') ?
-                'Bearer ' + localStorage.getItem('access_token') :
-                null,
-            },
-        };
-        axiosInstance.post('/recipes/', formData, config).then((response) => {
-            console.log(response.data);
-            navigate('/recipe/' + response.data.id);
-        });
-    };
-
-    const onErrors = (errors) => console.error(errors);
 
     if (isLoading) {
         return <Loading />
@@ -145,7 +109,7 @@ export default function AllRecipes() {
                     <p>{recipe.directions}</p>
                 </div>
 
-                <Ratings ratings={recipe.ratings} />
+                <Ratings ratings={recipe.ratings} recipe_id={id} />
 
             </div>
         </div>

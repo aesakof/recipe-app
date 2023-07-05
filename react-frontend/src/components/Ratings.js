@@ -2,44 +2,37 @@ import React, { useState, useEffect, useContext } from "react"
 import axiosInstance from '../axios';
 import { Context } from "../Context";
 import { Link, useParams, useNavigate } from "react-router-dom"
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 
 import DeleteRecipeModal from "./DeleteRecipeModal";
 import ImageModal from "./ImageModel";
 
+import { Rating } from '@smastrom/react-rating';
 
-export default function Ratings(ratings) {
-    const { register, handleSubmit, watch, getValues, formState: { errors } } = useForm();
+
+export default function Ratings(props) {
+    const { register, control, handleSubmit, watch, getValues, formState: { errors } } = useForm();
     const navigate = useNavigate();
-
 
     const onFormSubmit = (data) => { 
         console.log(data);
         const formData = new FormData();
-        if(data.photo.length >= 1) {
-            formData.append('photo', data.photo[0]);
-        }
-        formData.append('recipe_name', data.recipe_name);
-        formData.append('life_story', data.life_story);
-        formData.append('prep_time', data.prep_time);
-        formData.append('cook_time', data.cook_time);
-        formData.append('servings', data.servings);
-        formData.append('ingredients', data.ingredients);
-        formData.append('equipment', data.equipment);
-        formData.append('directions', data.directions);
+
+        formData.append('recipe', props.recipe_id);
+        formData.append('review', data.review);
         formData.append('rating', data.rating);
 
         const config = {
             headers: {
-                'content-type': 'multipart/form-data',
+                'content-type': 'application/json',
                 'Authorization': localStorage.getItem('access_token') ?
                 'Bearer ' + localStorage.getItem('access_token') :
                 null,
             },
         };
-        axiosInstance.post('/recipes/', formData, config).then((response) => {
+        axiosInstance.post('/ratings/', formData, config).then((response) => {
             console.log(response.data);
-            navigate('/recipe/' + response.data.id);
+            navigate(0);
         });
     };
 
@@ -49,8 +42,29 @@ export default function Ratings(ratings) {
         <div className="max-w-4xl m-auto py-10 mt-10 mb-10 px-12 border bg-white rounded-md">
             <label className="text-2xl font-bold font-medium block">Ratings</label>
             <hr className="my-5"></hr>
-            <form>
-                <label className="text-xl font-bold font-medium block">My Review</label>
+            <form onSubmit={handleSubmit(onFormSubmit, onErrors)}>
+                <div>
+                    <label className="text-xl font-bold font-medium block">My Rating</label>
+                    <Controller
+                    control={control}
+                    name="rating"
+                    rules={{
+                        validate: (rating) => rating > 0,
+                    }}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <Rating
+                        value={value}
+                        isRequired
+                        onChange={onChange}
+                        visibleLabelId="rating_label"
+                        onBlur={onBlur}
+                        style={{ maxWidth: 175 }}
+                        />
+                    )}
+                    />
+                    {errors.rating && <div>Rating is required.</div>}
+                </div>
+                <label className="text-xl pt-5 font-bold font-medium block">My Review</label>
                 <textarea 
                     className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
                     name="review"
@@ -64,13 +78,17 @@ export default function Ratings(ratings) {
                     Submit
                 </button>
             </form>
-            { ratings.ratings.map( (rating) => (
+            { props.ratings.map( (rating) => (
                 <div>
                     <hr className="my-5"></hr>
                     <p>{rating.username}</p>
-                    <p>{rating.rating}</p>
+                    <Rating
+                        style={{ maxWidth: 100 }}
+                        value={3}
+                        readOnly
+                    />
                     <p>{rating.date_published}</p>
-                    <p>{rating.comment}</p>
+                    <p>{rating.review}</p>
                 </div>
             ))}
         </div>
