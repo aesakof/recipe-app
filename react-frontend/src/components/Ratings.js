@@ -39,8 +39,8 @@ export default function Ratings(props) {
     const onErrors = (errors) => console.error(errors);
 
     return(
-        <div className="max-w-4xl m-auto py-10 mt-10 mb-10 px-12 border bg-white rounded-md">
-            <label className="text-2xl font-bold font-medium block">Ratings</label>
+        <div id="ratings" className="max-w-4xl m-auto py-10 mt-10 mb-10 px-12 border bg-white rounded-md">
+            <label className="text-2xl font-bold font-medium block">Ratings ({props.num_ratings})</label>
             <hr className="my-5"></hr>
             <form onSubmit={handleSubmit(onFormSubmit, onErrors)}>
                 <div>

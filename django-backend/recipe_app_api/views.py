@@ -27,6 +27,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     queryset = Recipe.objects.all()
 
+    def get_queryset(self):
+        return Recipe.objects.annotate(avg_rating=Avg('ratings__rating')).annotate(num_ratings=Count('ratings'))
+
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
         # serializer.save(published_date=date.today())
@@ -70,3 +73,5 @@ class RatingViewSet(viewsets.ModelViewSet):
         else:
             self.permission_classes = [AllowAny]
         return super().get_permissions()
+    
+

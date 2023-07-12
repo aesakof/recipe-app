@@ -3,6 +3,8 @@ import axiosInstance from '../axios';
 import { Context } from "../Context";
 import { Link } from "react-router-dom"
 
+import { Rating } from '@smastrom/react-rating';
+
 
 export default function AllRecipes() {
     // const { username, setUsername } = useContext(Context);
@@ -33,6 +35,14 @@ export default function AllRecipes() {
                                 <img className="h-56 w-full object-cover" src={recipe.photo}/>
                                 <div className="text-lg font-bold mt-3 group-hover:underline">
                                     {recipe.recipe_name}
+                                </div>
+                                <div className="flex">
+                                    <Rating
+                                        value={recipe.avg_rating}
+                                        readOnly
+                                        style={{ maxWidth: 105 }}
+                                    />
+                                    <p className="px-2">{recipe.num_ratings} ratings</p>
                                 </div>
                                 <div className="disabled:hover">by {recipe.username}</div>
                             </Link>

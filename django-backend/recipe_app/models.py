@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Avg
 from django.db.models.query import QuerySet
 from django.forms import IntegerField
 from django.conf import settings

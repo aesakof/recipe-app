@@ -9,10 +9,13 @@ import ImageModal from "./ImageModel";
 import Ratings from "./Ratings";
 import Loading from "./Loading";
 
+import { Rating } from '@smastrom/react-rating';
+
 
 export default function AllRecipes() {
     const { username } = useContext(Context);
     const [ recipe, setRecipe ] = useState([]);
+    const [ ratings, setRatings ] = useState([])
     const [ isLoading, setIsLoading ] = useState(true);
     const { id } = useParams();
 
@@ -26,6 +29,12 @@ export default function AllRecipes() {
         });
     }, [])
 
+    useEffect(() => {
+        axiosInstance.get('/ratings/?recipe=' + id).then((res) => {
+            setRatings(res.data);
+        })
+    }, [])
+
     if (isLoading) {
         return <Loading />
     }
@@ -36,24 +45,16 @@ export default function AllRecipes() {
                     <p>Tags: tag 1   tag 2   tag 3</p>
                     <h1 className="text-left text-7xl py-2 font-bold">{recipe.recipe_name}</h1>
                     <p className="py-2">It's a really good sandwich</p>
-                    <div>
-                        <ion-icon size="small" name="star"></ion-icon>
-                        <ion-icon size="large" name="star"></ion-icon>
-                        <ion-icon className="blue" name="star"></ion-icon>
-                        <ion-icon name="star"></ion-icon>
-                        <ion-icon name="star-outline"></ion-icon>
-                        <ion-icon name="star-half"></ion-icon>
-                    </div>
 
-                    <div class="flex items-center">
-                        <svg aria-hidden="true" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                        <svg aria-hidden="true" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Second star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                        <svg aria-hidden="true" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Third star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                        <svg aria-hidden="true" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Fourth star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                        <svg aria-hidden="true" class="w-5 h-5 text-gray-300 dark:text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Fifth star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                    <div className="flex">
+                        <Rating
+                            value={recipe.avg_rating}
+                            readOnly
+                            style={{ maxWidth: 105 }}
+                        />
+                        <a className="px-2 hover:underline" href="#ratings">{recipe.avg_rating}   ({recipe.num_ratings} ratings)</a>
                     </div>
-
-                    <p className="py-2">Rating: {recipe.rating} stars</p>
+                    
                     <p className="py-2">by: {recipe.username} | Published: {recipe.date_published} Updated: {recipe.date_last_updated}</p>
                     
                     {   
@@ -109,7 +110,7 @@ export default function AllRecipes() {
                     <p>{recipe.directions}</p>
                 </div>
 
-                <Ratings ratings={recipe.ratings} recipe_id={id} />
+                <Ratings ratings={recipe.ratings} num_ratings={recipe.num_ratings} recipe_id={id} />
 
             </div>
         </div>
