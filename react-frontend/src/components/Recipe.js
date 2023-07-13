@@ -15,7 +15,6 @@ import { Rating } from '@smastrom/react-rating';
 export default function AllRecipes() {
     const { username } = useContext(Context);
     const [ recipe, setRecipe ] = useState([]);
-    const [ ratings, setRatings ] = useState([])
     const [ isLoading, setIsLoading ] = useState(true);
     const { id } = useParams();
 
@@ -27,12 +26,6 @@ export default function AllRecipes() {
             setRecipe(res.data);
             setIsLoading(false);
         });
-    }, [])
-
-    useEffect(() => {
-        axiosInstance.get('/ratings/?recipe=' + id).then((res) => {
-            setRatings(res.data);
-        })
     }, [])
 
     if (isLoading) {

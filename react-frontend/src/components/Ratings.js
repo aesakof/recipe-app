@@ -12,7 +12,14 @@ import { Rating } from '@smastrom/react-rating';
 
 export default function Ratings(props) {
     const { register, control, handleSubmit, watch, getValues, formState: { errors } } = useForm();
+    const [ ratings, setRatings ] = useState([])
     const navigate = useNavigate();
+
+    useEffect(() => {
+        axiosInstance.get('/ratings/?recipe=' + props.recipe_id).then((res) => {
+            setRatings(res.data);
+        })
+    }, [])
 
     const onFormSubmit = (data) => { 
         console.log(data);
@@ -78,13 +85,13 @@ export default function Ratings(props) {
                     Submit
                 </button>
             </form>
-            { props.ratings.map( (rating) => (
+            { ratings.map( (rating) => (
                 <div>
                     <hr className="my-5"></hr>
                     <p>{rating.username}</p>
                     <Rating
                         style={{ maxWidth: 100 }}
-                        value={3}
+                        value={rating.rating}
                         readOnly
                     />
                     <p>{rating.date_published}</p>

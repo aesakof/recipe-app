@@ -1,4 +1,4 @@
-from rest_framework import generics, viewsets, filters
+from rest_framework import generics, viewsets, filters, status
 from rest_framework.decorators import permission_classes, api_view
 from rest_framework.response import Response
 from rest_framework.permissions import SAFE_METHODS, IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
@@ -73,5 +73,14 @@ class RatingViewSet(viewsets.ModelViewSet):
         else:
             self.permission_classes = [AllowAny]
         return super().get_permissions()
+    
+@api_view(['GET'])
+def UserRating(request):
+    recipe_id = request.query_params.get('recipe_id')
+
+    rating = Rating.objects.filter(recipe=recipe_id, user=request.user).latest('updated_date')
+    serializer = RatingSerializer(rating)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
     
 

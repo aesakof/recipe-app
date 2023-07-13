@@ -43,5 +43,6 @@ class Rating(models.Model):
     review = models.CharField(max_length=500)
     recipe = models.ForeignKey(Recipe,on_delete=models.CASCADE, related_name='ratings')
     published_date = models.DateField(default=date.today)
+    updated_date = models.DateField(default=date.today)
     # updated_date = models.DateField(default=date.today)
     # photo = models.ImageField(upload_to='images/', blank=True)
