@@ -103,7 +103,7 @@ export default function AllRecipes() {
                     <p>{recipe.directions}</p>
                 </div>
 
-                <Ratings ratings={recipe.ratings} num_ratings={recipe.num_ratings} recipe_id={id} />
+                <Ratings num_ratings={recipe.num_ratings} recipe_id={id} />
 
             </div>
         </div>

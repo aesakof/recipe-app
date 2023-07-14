@@ -12,13 +12,23 @@ import { Rating } from '@smastrom/react-rating';
 
 export default function Ratings(props) {
     const { register, control, handleSubmit, watch, getValues, formState: { errors } } = useForm();
-    const [ ratings, setRatings ] = useState([])
+    const [ ratings, setRatings ] = useState([]);
+    const [ userRating, setUserRating ] = useState({});
     const navigate = useNavigate();
 
     useEffect(() => {
-        axiosInstance.get('/ratings/?recipe=' + props.recipe_id).then((res) => {
-            setRatings(res.data);
+        Promise.all([
+            axiosInstance.get('/ratings/?recipe=' + props.recipe_id),
+            axiosInstance.get('/user-rating/?recipe_id=' + props.recipe_id)
+        ]).then(function([res1, res2]) {
+            setRatings(res1.data);
+            setUserRating(res2.data);
+            console.log(res2.data)
         })
+
+        // axiosInstance.get('/ratings/?recipe=' + props.recipe_id).then((res) => {
+        //     setRatings(res.data);
+        // })
     }, [])
 
     const onFormSubmit = (data) => { 

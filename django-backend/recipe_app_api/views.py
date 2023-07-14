@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Sum, Min, Max, Avg, Count, F
 from rest_framework.response import Response
 from datetime import date
-# from .filters import RecipeFilter
+from .filters import RecipeFilter, RatingFilter
 
 class RecipePagination(PageNumberPagination):
     page_size = 12
@@ -22,7 +22,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     pagination_class = RecipePagination
     lookup_field = "id"
     filter_backends = [DjangoFilterBackend]
-    # filterset_class = RecipeFilter 
+    filterset_class = RecipeFilter 
     # filterset_fields = ('user__user_name','date')
 
     queryset = Recipe.objects.all()
@@ -50,9 +50,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
 class RatingViewSet(viewsets.ModelViewSet):
     serializer_class = RatingSerializer
-    lookup_field = "id"
+    lookup_fields = ('id', 'recipe')
     filter_backends = [DjangoFilterBackend]
-    # filterset_class = RecipeFilter 
+    filterset_class = RatingFilter 
     # filterset_fields = ('user__user_name','date')
 
     queryset = Rating.objects.all()
@@ -74,13 +74,17 @@ class RatingViewSet(viewsets.ModelViewSet):
             self.permission_classes = [AllowAny]
         return super().get_permissions()
     
+    
 @api_view(['GET'])
 def UserRating(request):
     recipe_id = request.query_params.get('recipe_id')
 
-    rating = Rating.objects.filter(recipe=recipe_id, user=request.user).latest('updated_date')
-    serializer = RatingSerializer(rating)
+    try:
+        rating = Rating.objects.filter(recipe=recipe_id, user=request.user).latest('updated_date')
+        serializer = RatingSerializer(rating)
 
-    return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Rating.DoesNotExist:
+        return Response({})
     
 
