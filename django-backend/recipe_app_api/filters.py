@@ -8,7 +8,7 @@ class RecipeFilter(filters.FilterSet):
 
     class Meta:
         model = Recipe
-        fields = ['author__user_name']
+        fields = ['user__user_name']
 
 
 class RatingFilter(filters.FilterSet):

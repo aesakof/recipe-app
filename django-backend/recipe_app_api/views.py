@@ -31,7 +31,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return Recipe.objects.annotate(avg_rating=Avg('ratings__rating')).annotate(num_ratings=Count('ratings'))
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        serializer.save(user=self.request.user)
         # serializer.save(published_date=date.today())
         # serializer.save(updated_date=date.today())
 

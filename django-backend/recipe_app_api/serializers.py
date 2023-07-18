@@ -5,7 +5,7 @@ from recipe_app.models import Recipe, Rating
 class RatingSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.user_name", read_only=True)
     date_published = serializers.DateField(source="published_date", read_only=True)
-    date_last_updated = serializers.DateField(source="published_date", read_only=True)
+    date_last_updated = serializers.DateField(source="updated_date", read_only=True)
 
     class Meta:
         model = Rating
@@ -14,7 +14,7 @@ class RatingSerializer(serializers.ModelSerializer):
 
 class RecipeSerializer(serializers.ModelSerializer):
 
-    username = serializers.CharField(source="author.user_name", read_only=True)
+    username = serializers.CharField(source="user.user_name", read_only=True)
     date_published = serializers.DateField(source="published_date", read_only=True)
     date_last_updated = serializers.DateField(source="updated_date", read_only=True)
     avg_rating = serializers.DecimalField(read_only=True, max_digits=5, decimal_places=1)
