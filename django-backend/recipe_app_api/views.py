@@ -88,3 +88,21 @@ def UserRating(request):
         return Response({})
     
 
+@api_view(['GET'])
+def RatingStats(request):
+    recipe_id = request.query_params.get('recipe_id')
+    ratings = Rating.objects.filter(recipe=recipe_id)
+
+    one_stars = ratings.filter(rating=1).count()
+    two_stars = ratings.filter(rating=2).count()
+    three_stars = ratings.filter(rating=3).count()
+    four_stars = ratings.filter(rating=4).count()
+    five_stars = ratings.filter(rating=5).count()
+
+    return Response({
+        "one_stars": one_stars,
+        "two_stars": two_stars,
+        "three_stars": three_stars,
+        "four_stars": four_stars,
+        "five_stars": five_stars
+    })

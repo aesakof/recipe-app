@@ -159,7 +159,7 @@ export default function Ratings(props) {
                                             value={userRating.rating}
                                             readOnly
                                         />
-                                        <p>{userRating.date_published}</p>
+                                        <p>{userRating.date_last_updated}</p>
                                         <p>{userRating.review}</p>
                                     </div>
                                 )
