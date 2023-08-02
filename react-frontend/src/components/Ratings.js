@@ -16,6 +16,7 @@ export default function Ratings(props) {
     });
     const [ ratings, setRatings ] = useState([]);
     const [ userRating, setUserRating ] = useState({});
+    const [ ratingStats, setRatingStats ] = useState({});
     const [ formActive, setFormActive ] = useState(true);
     const [ refreshKey, setRefreshKey ] = useState(0);
     const navigate = useNavigate();
@@ -38,6 +39,14 @@ export default function Ratings(props) {
                     setValue('rating', res.data.rating);
                     setValue('review', res.data.review);
                 };
+            });
+        };
+    }, [refreshKey]);
+
+    useEffect(() => {
+        if(username) {
+            axiosInstance.get('/rating-stats/?recipe_id=' + props.recipe_id).then((res) => {
+                setRatingStats(res.data);
             });
         };
     }, [refreshKey]);
@@ -87,89 +96,132 @@ export default function Ratings(props) {
         <div id="ratings" className="max-w-4xl m-auto">
             <label className="text-2xl font-bold font-medium block">Ratings ({props.num_ratings})</label>
             <hr className="my-5"></hr>
+            <div className="bg-gray-300 p-6">
+                <div className="bg-white p-5">
+                    <div>
+                        <div className="grid justify-items">
+                            <Rating
+                                value={ratingStats.average}
+                                readOnly
+                                style={{ maxWidth: 300 }}
+                            />
+                            <h1>{ratingStats.average} out of 5</h1>
+                            <h1>{ratingStats.count} Ratings</h1>
+                        </div>
+                        <div>
+                            <div className="pt-1">
+                                <div className="overflow-hidden h-4 mb-4 text-xs flex rounded bg-pink-200">
+                                    <div style={{ width: "20%" }} className="flex flex-col bg-pink-500"></div>
+                                </div>
+                            </div>
+                            <div className="pt-1">
+                                <div className="overflow-hidden h-4 mb-4 text-xs flex rounded bg-pink-200">
+                                    <div style={{ width: "20%" }} className="flex flex-col bg-pink-500"></div>
+                                </div>
+                            </div>
+                            <div className="pt-1">
+                                <div className="overflow-hidden h-4 mb-4 text-xs flex rounded bg-pink-200">
+                                    <div style={{ width: "20%" }} className="flex flex-col bg-pink-500"></div>
+                                </div>
+                            </div>
+                            <div className="pt-1">
+                                <div className="overflow-hidden h-4 mb-4 text-xs flex rounded bg-pink-200">
+                                    <div style={{ width: "20%" }} className="flex flex-col bg-pink-500"></div>
+                                </div>
+                            </div>
+                            <div className="pt-1">
+                                <div className="overflow-hidden h-4 mb-4 text-xs flex rounded bg-pink-200">
+                                    <div style={{ width: "20%" }} className="flex flex-col bg-pink-500"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
 
-            {
-                username ?
-                    <div className="bg-gray-300 p-6">
-                        <div className="bg-white p-5">
-                            {
-                                formActive ? (
-                                    <form onSubmit={handleSubmit(onFormSubmit, onErrors)}>
-                                        <div>
-                                            <label className="text-xl font-bold font-medium block">My Rating</label>
-                                            <Controller
-                                            control={control}
-                                            name="rating"
-                                            rules={{
-                                                validate: (rating) => rating > 0,
-                                            }}
-                                            render={({ field: { onChange, onBlur, value } }) => (
-                                                <Rating
-                                                value={value}
-                                                isRequired
-                                                onChange={onChange}
-                                                visibleLabelId="rating_label"
-                                                onBlur={onBlur}
-                                                style={{ maxWidth: 175 }}
-                                                />
-                                            )}
-                                            />
-                                            {errors.rating && <div className="text-normal text-red-500">Rating is required.</div>}
-                                        </div>
-                                        <label className="text-xl pt-5 font-bold font-medium block">My Review</label>
-                                        <textarea 
-                                            className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
-                                            name="review"
-                                            rows={5}
-                                            {...register('review', { required: { value: true, message: "This field is required"}})} 
-                                        />
-                                        {errors.rating && <div className="text-normal text-red-500">Review is required.</div>}
-                                        <div className="flex">
-                                            <button
-                                                onClick={handleCancel}
-                                                className="mt-4 w-full bg-blue-400 hover:bg-blue-600 text-blue-100 border py-3 px-6 font-semibold text-md rounded"
-                                            >
-                                                Cancel
-                                            </button>
-                                            <button
-                                                className="mt-4 w-full bg-blue-400 hover:bg-blue-600 text-blue-100 border py-3 px-6 font-semibold text-md rounded"
-                                                type="submit"
-                                            >
-                                                Submit
-                                            </button>
-                                        </div>
-                                    </form>
-                                ) : (
-                                    <div>
-                                        <div className="flex justify-between">
-                                            <label className="text-xl font-bold font-medium block">My Rating</label>
+                    <hr className="my-5"></hr>
+
+                    {
+                        username ?
+                            <div>
+                                {
+                                    formActive ? (
+                                        <form onSubmit={handleSubmit(onFormSubmit, onErrors)}>
                                             <div>
-                                                <ion-icon name="create-outline"></ion-icon>
+                                                <label className="text-xl font-bold font-medium block">My Rating</label>
+                                                <Controller
+                                                control={control}
+                                                name="rating"
+                                                rules={{
+                                                    validate: (rating) => rating > 0,
+                                                }}
+                                                render={({ field: { onChange, onBlur, value } }) => (
+                                                    <Rating
+                                                    value={value}
+                                                    isRequired
+                                                    onChange={onChange}
+                                                    visibleLabelId="rating_label"
+                                                    onBlur={onBlur}
+                                                    style={{ maxWidth: 175 }}
+                                                    />
+                                                )}
+                                                />
+                                                {errors.rating && <div className="text-normal text-red-500">Rating is required.</div>}
+                                            </div>
+                                            <label className="text-xl pt-5 font-bold font-medium block">My Review</label>
+                                            <textarea 
+                                                className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
+                                                name="review"
+                                                rows={5}
+                                                {...register('review', { required: { value: true, message: "This field is required"}})} 
+                                            />
+                                            {errors.rating && <div className="text-normal text-red-500">Review is required.</div>}
+                                            <div className="flex">
                                                 <button
-                                                    className="hover:underline font-semibold"
-                                                    onClick={() => setFormActive(true)}
+                                                    onClick={handleCancel}
+                                                    className="mt-4 w-full bg-blue-400 hover:bg-blue-600 text-blue-100 border py-3 px-6 font-semibold text-md rounded"
                                                 >
-                                                    Edit
+                                                    Cancel
+                                                </button>
+                                                <button
+                                                    className="mt-4 w-full bg-blue-400 hover:bg-blue-600 text-blue-100 border py-3 px-6 font-semibold text-md rounded"
+                                                    type="submit"
+                                                >
+                                                    Submit
                                                 </button>
                                             </div>
+                                        </form>
+                                    ) : (
+                                        <div>
+                                            <div className="flex justify-between">
+                                                <label className="text-xl font-bold font-medium block">My Rating</label>
+                                                <div>
+                                                    <ion-icon name="create-outline"></ion-icon>
+                                                    <button
+                                                        className="hover:underline font-semibold"
+                                                        onClick={() => setFormActive(true)}
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            
+                                            <Rating
+                                                style={{ maxWidth: 175 }}
+                                                value={userRating.rating}
+                                                readOnly
+                                            />
+                                            <p>{userRating.date_last_updated}</p>
+                                            <p>{userRating.review}</p>
                                         </div>
-                                        
-                                        <Rating
-                                            style={{ maxWidth: 175 }}
-                                            value={userRating.rating}
-                                            readOnly
-                                        />
-                                        <p>{userRating.date_last_updated}</p>
-                                        <p>{userRating.review}</p>
-                                    </div>
-                                )
-                            }
-                        </div>
-                        
-                    </div>
-                :
-                <></>
-            }
+                                    )
+                                }
+                            </div>                        
+                        :
+                        <></>
+                    }
+                </div>
+            </div>
             
             { ratings.map( (rating) => (
                 <div>

@@ -92,7 +92,9 @@ def UserRating(request):
 def RatingStats(request):
     recipe_id = request.query_params.get('recipe_id')
     ratings = Rating.objects.filter(recipe=recipe_id)
-
+    
+    count = ratings.count()
+    average = ratings.aggregate(Avg('rating'))
     one_stars = ratings.filter(rating=1).count()
     two_stars = ratings.filter(rating=2).count()
     three_stars = ratings.filter(rating=3).count()
@@ -100,6 +102,8 @@ def RatingStats(request):
     five_stars = ratings.filter(rating=5).count()
 
     return Response({
+        "count": count,
+        "average": round(average['rating__avg'], 1),
         "one_stars": one_stars,
         "two_stars": two_stars,
         "three_stars": three_stars,
