@@ -81,6 +81,12 @@ export default function Ratings(props) {
         
     };
 
+    const getWidth = (ratings, totalRatings) => {
+        if(ratings > 0) {
+
+        }
+    }
+
     const onErrors = (errors) => console.error(errors);
 
     const handleCancel = () => {
@@ -108,37 +114,60 @@ export default function Ratings(props) {
                             <h1>{ratingStats.average} out of 5</h1>
                             <h1>{ratingStats.count} Ratings</h1>
                         </div>
-                        <div>
-                            <div className="pt-1">
-                                <div className="overflow-hidden h-4 mb-4 text-xs flex rounded bg-pink-200">
-                                    <div style={{ width: "20%" }} className="flex flex-col bg-pink-500"></div>
+                        <div className="">
+                            <div className="flex">
+                                <p>5</p>
+                                <div className="w-96 h-5 bg-gray-300 rounded">
+                                    <div 
+                                        className="h-5 bg-red-800 rounded" 
+                                        style={{width: ratingStats.five_stars/ratingStats.count * 100 + "%"}}>
+                                    </div>
                                 </div>
+                                <p>{ratingStats.five_stars}</p>
                             </div>
-                            <div className="pt-1">
-                                <div className="overflow-hidden h-4 mb-4 text-xs flex rounded bg-pink-200">
-                                    <div style={{ width: "20%" }} className="flex flex-col bg-pink-500"></div>
+                            <div className="flex">
+                                <p>4</p>
+                                <div className="w-96 h-5 bg-gray-300 rounded">
+                                    <div 
+                                        className="h-5 bg-red-800 rounded" 
+                                        style={{width: ratingStats.four_stars/ratingStats.count * 100 + "%"}}>
+                                    </div>
                                 </div>
+                                <p>{ratingStats.four_stars}</p>
                             </div>
-                            <div className="pt-1">
-                                <div className="overflow-hidden h-4 mb-4 text-xs flex rounded bg-pink-200">
-                                    <div style={{ width: "20%" }} className="flex flex-col bg-pink-500"></div>
+                            <div className="flex">
+                                <p>3</p>
+                                <div className="w-96 h-5 bg-gray-300 rounded">
+                                    <div 
+                                        className="h-5 bg-red-800 rounded" 
+                                        style={{width: ratingStats.three_stars/ratingStats.count * 100 + "%"}}>
+                                    </div>
                                 </div>
+                                <p>{ratingStats.three_stars}</p>
                             </div>
-                            <div className="pt-1">
-                                <div className="overflow-hidden h-4 mb-4 text-xs flex rounded bg-pink-200">
-                                    <div style={{ width: "20%" }} className="flex flex-col bg-pink-500"></div>
+                            <div className="flex">
+                                <p>2</p>
+                                <div className="w-96 h-5 bg-gray-300 rounded">
+                                    <div 
+                                        className="h-5 bg-red-800 rounded" 
+                                        style={{width: ratingStats.two_stars/ratingStats.count * 100 + "%"}}>
+                                    </div>
                                 </div>
+                                <p>{ratingStats.two_stars}</p>
                             </div>
-                            <div className="pt-1">
-                                <div className="overflow-hidden h-4 mb-4 text-xs flex rounded bg-pink-200">
-                                    <div style={{ width: "20%" }} className="flex flex-col bg-pink-500"></div>
+                            <div className="flex">
+                                <p>1</p>
+                                <div className="w-96 h-5 bg-gray-300 rounded">
+                                    <div 
+                                        className="h-5 bg-red-800 rounded" 
+                                        style={{width: ratingStats.one_stars/ratingStats.count * 100 + "%"}}>
+                                    </div>
                                 </div>
+                                <p>{ratingStats.one_stars}</p>
                             </div>
                         </div>
                     </div>
                     
-                    
-
                     <hr className="my-5"></hr>
 
                     {
@@ -157,12 +186,12 @@ export default function Ratings(props) {
                                                 }}
                                                 render={({ field: { onChange, onBlur, value } }) => (
                                                     <Rating
-                                                    value={value}
-                                                    isRequired
-                                                    onChange={onChange}
-                                                    visibleLabelId="rating_label"
-                                                    onBlur={onBlur}
-                                                    style={{ maxWidth: 175 }}
+                                                        value={value}
+                                                        isRequired
+                                                        onChange={onChange}
+                                                        visibleLabelId="rating_label"
+                                                        onBlur={onBlur}
+                                                        style={{ maxWidth: 175 }}
                                                     />
                                                 )}
                                                 />
