@@ -7,7 +7,7 @@ import { useForm, Controller } from "react-hook-form";
 import DeleteRecipeModal from "./DeleteRecipeModal";
 import ImageModal from "./ImageModel";
 
-import { Rating } from '@smastrom/react-rating';
+import { Rating, Star } from '@smastrom/react-rating';
 
 
 export default function Ratings(props) {
@@ -105,65 +105,71 @@ export default function Ratings(props) {
             <div className="bg-gray-300 p-6">
                 <div className="bg-white p-5">
                     <div>
-                        <div className="grid justify-items">
+                        <div className="flex justify-center">
                             <Rating
                                 value={ratingStats.average}
                                 readOnly
                                 style={{ maxWidth: 300 }}
                             />
-                            <h1>{ratingStats.average} out of 5</h1>
-                            <h1>{ratingStats.count} Ratings</h1>
+                            <h1 className="">{ratingStats.average} out of 5</h1>
+                            
                         </div>
+                        <h1 className="flex justify-center">{ratingStats.count} Ratings</h1>
                         <div className="">
-                            <div className="flex">
-                                <p>5</p>
+                            <div className="flex justify-center pt-1">
+                                <p className="px-1">5</p>
+                                <ion-icon name="star" style={{ color: "#f59e0b", paddingRight: "6px" }}></ion-icon>
                                 <div className="w-96 h-5 bg-gray-300 rounded">
                                     <div 
                                         className="h-5 bg-red-800 rounded" 
                                         style={{width: ratingStats.five_stars/ratingStats.count * 100 + "%"}}>
                                     </div>
                                 </div>
-                                <p>{ratingStats.five_stars}</p>
+                                <p className="px-1">{ratingStats.five_stars}</p>
                             </div>
-                            <div className="flex">
-                                <p>4</p>
+                            <div className="flex justify-center pt-1">
+                                <p className="px-1">4</p>
+                                <ion-icon name="star" style={{ color: "#f59e0b", paddingRight: "6px" }}></ion-icon>
                                 <div className="w-96 h-5 bg-gray-300 rounded">
                                     <div 
                                         className="h-5 bg-red-800 rounded" 
                                         style={{width: ratingStats.four_stars/ratingStats.count * 100 + "%"}}>
                                     </div>
                                 </div>
-                                <p>{ratingStats.four_stars}</p>
+                                <p className="px-1">{ratingStats.four_stars}</p>
                             </div>
-                            <div className="flex">
-                                <p>3</p>
+                            <div className="flex justify-center pt-1">
+                                <p className="px-1">3</p>
+                                <ion-icon name="star" style={{ color: "#f59e0b", paddingRight: "6px" }}></ion-icon>
                                 <div className="w-96 h-5 bg-gray-300 rounded">
                                     <div 
                                         className="h-5 bg-red-800 rounded" 
                                         style={{width: ratingStats.three_stars/ratingStats.count * 100 + "%"}}>
                                     </div>
                                 </div>
-                                <p>{ratingStats.three_stars}</p>
+                                <p className="px-1">{ratingStats.three_stars}</p>
                             </div>
-                            <div className="flex">
-                                <p>2</p>
+                            <div className="flex justify-center pt-1">
+                                <p className="px-1">2</p>
+                                <ion-icon name="star" style={{ color: "#f59e0b", paddingRight: "6px" }}></ion-icon>
                                 <div className="w-96 h-5 bg-gray-300 rounded">
                                     <div 
                                         className="h-5 bg-red-800 rounded" 
                                         style={{width: ratingStats.two_stars/ratingStats.count * 100 + "%"}}>
                                     </div>
                                 </div>
-                                <p>{ratingStats.two_stars}</p>
+                                <p className="px-1">{ratingStats.two_stars}</p>
                             </div>
-                            <div className="flex">
-                                <p>1</p>
+                            <div className="flex justify-center pt-1">
+                                <p className="px-1">1</p>
+                                <ion-icon name="star" style={{ color: "#f59e0b", paddingRight: "6px" }}></ion-icon>
                                 <div className="w-96 h-5 bg-gray-300 rounded">
                                     <div 
                                         className="h-5 bg-red-800 rounded" 
                                         style={{width: ratingStats.one_stars/ratingStats.count * 100 + "%"}}>
                                     </div>
                                 </div>
-                                <p>{ratingStats.one_stars}</p>
+                                <p className="px-1">{ratingStats.one_stars}</p>
                             </div>
                         </div>
                     </div>
