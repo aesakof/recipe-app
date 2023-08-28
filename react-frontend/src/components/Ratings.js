@@ -17,6 +17,7 @@ export default function Ratings(props) {
     const [ ratings, setRatings ] = useState([]);
     const [ userRating, setUserRating ] = useState({});
     const [ ratingStats, setRatingStats ] = useState({});
+    const [ showImageModal, setShowImageModal ] = useState(false);
     const [ formActive, setFormActive ] = useState(true);
     const [ refreshKey, setRefreshKey ] = useState(0);
     const navigate = useNavigate();
@@ -269,6 +270,17 @@ export default function Ratings(props) {
                     />
                     <p>{rating.date_last_updated}</p>
                     <p>{rating.review}</p>
+                    
+                    {rating.photo && 
+                    <>
+                        <div onClick={() => setShowImageModal(true)} className="h-48 w-48">
+                            <img className="object-cover" src={rating.photo}/>
+                        </div>
+                        {
+                            showImageModal ? <ImageModal showImageModal={showImageModal} setShowImageModal={setShowImageModal} image={rating.photo} /> : null
+                        }
+                    </>}
+                    
                 </div>
             ))}
         </div>

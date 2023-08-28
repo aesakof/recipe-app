@@ -17,7 +17,7 @@ class Recipe(models.Model):
 
     recipe_name = models.CharField(max_length=50)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to='images/', blank=True)
+    photo = models.ImageField(upload_to='images/recipes/', blank=True)
     life_story = models.CharField(max_length=500)
     prep_time = models.IntegerField()
     cook_time = models.IntegerField()
@@ -44,5 +44,4 @@ class Rating(models.Model):
     recipe = models.ForeignKey(Recipe,on_delete=models.CASCADE, related_name='ratings')
     published_date = models.DateField(default=date.today)
     updated_date = models.DateField(default=date.today)
-    # updated_date = models.DateField(default=date.today)
-    # photo = models.ImageField(upload_to='images/', blank=True)
+    photo = models.ImageField(upload_to='images/ratings/', blank=True)
