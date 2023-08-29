@@ -20,6 +20,7 @@ export default function Ratings(props) {
     const [ showImageModal, setShowImageModal ] = useState(false);
     const [ formActive, setFormActive ] = useState(true);
     const [ refreshKey, setRefreshKey ] = useState(0);
+    const [ commentPhoto, setCommentPhoto ] = useState(null);
     const navigate = useNavigate();
     const { username } = useContext(Context);
 
@@ -98,9 +99,14 @@ export default function Ratings(props) {
         }
     }
 
+    const clickCommentPhoto = (photo) => {
+        setCommentPhoto(photo);
+        setShowImageModal(true);
+    }
+
 // py-10 mt-10 mb-10 px-12 border bg-white rounded-md
     return(
-        <div id="ratings" className="max-w-4xl m-auto">
+        <div id="ratings" className="max-w-4xl m-auto pb-9">
             <label className="text-2xl font-bold font-medium block">Ratings ({props.num_ratings})</label>
             <hr className="my-5"></hr>
             <div className="bg-gray-300 p-6">
@@ -273,16 +279,16 @@ export default function Ratings(props) {
                     
                     {rating.photo && 
                     <>
-                        <div onClick={() => setShowImageModal(true)} className="h-48 w-48">
+                        <div onClick={() => clickCommentPhoto(rating.photo)} className="w-48">
                             <img className="object-cover" src={rating.photo}/>
                         </div>
-                        {
-                            showImageModal ? <ImageModal showImageModal={showImageModal} setShowImageModal={setShowImageModal} image={rating.photo} /> : null
-                        }
                     </>}
                     
                 </div>
             ))}
+            {
+                showImageModal ? <ImageModal showImageModal={showImageModal} setShowImageModal={setShowImageModal} image={commentPhoto} /> : null
+            }
         </div>
     )
 }
