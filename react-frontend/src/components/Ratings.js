@@ -24,6 +24,13 @@ export default function Ratings(props) {
     const navigate = useNavigate();
     const { username } = useContext(Context);
 
+    const [picture, setPicture] = useState(null);
+
+    const onChangePicture = (e) => {
+        console.log(e.target.files);
+        setPicture(URL.createObjectURL(e.target.files[0]));
+    }
+
     useEffect(() => {
         axiosInstance.get('/ratings/?recipe=' + props.recipe_id).then((res) => {
             setRatings(res.data);
@@ -34,12 +41,15 @@ export default function Ratings(props) {
         if(username) {
             axiosInstance.get('/user-rating/?recipe_id=' + props.recipe_id).then((res) => {
                 setUserRating(res.data);
+                console.log('User rating')
+                console.log(res.data);
                 if(JSON.stringify(res.data) == "{}") {
                     setFormActive(true);
                 } else {
                     setFormActive(false);
                     setValue('rating', res.data.rating);
                     setValue('review', res.data.review);
+                    setPicture(res.data.photo);
                 };
             });
         };
@@ -57,10 +67,13 @@ export default function Ratings(props) {
         const formData = new FormData();
         formData.append('review', data.review);
         formData.append('rating', data.rating);
+        if(data.photo.length >= 1) {
+            formData.append('photo', data.photo[0]);
+        }
 
         const config = {
             headers: {
-                'content-type': 'application/json',
+                'content-type': 'multipart/form-data',
                 'Authorization': localStorage.getItem('access_token') ?
                 'Bearer ' + localStorage.getItem('access_token') :
                 null,
@@ -218,6 +231,30 @@ export default function Ratings(props) {
                                                 {...register('review', { required: { value: true, message: "This field is required"}})} 
                                             />
                                             {errors.rating && <div className="text-normal text-red-500">Review is required.</div>}
+
+                                            <div>
+                                                <label className="text-gray-600 font-medium block mt-4">Photo (Optional)</label>
+                                                <input 
+                                                    className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700"
+                                                    name="photo"
+                                                    type="file"
+                                                    accept="image/jpeg,image/png,image/gif" 
+                                                    {...register('photo', { 
+                                                        // required: { value: true, message: "This field is required"},
+                                                        onChange: (e) => {onChangePicture(e)}
+                                                    })} 
+                                                />
+                                                {picture && <div className="aspect-w-3 aspect-h-2">
+                                                    <img className="object-cover" src={picture}/>
+                                                </div>}
+                                                {/* {watchPhoto && <img src={URL.createObjectURL(getValues("photo"))}/>} */}
+                                                {errors.photo && (
+                                                <div className="mb-3 text-normal text-red-500">
+                                                    {errors.photo.message}
+                                                </div>
+                                                )}
+                                            </div>
+
                                             <div className="flex">
                                                 <button
                                                     onClick={handleCancel}
@@ -255,6 +292,13 @@ export default function Ratings(props) {
                                             />
                                             <p>{userRating.date_last_updated}</p>
                                             <p>{userRating.review}</p>
+                                            {userRating.photo && 
+                                            <>
+                                                <div onClick={() => clickCommentPhoto(userRating.photo)} className="w-48">
+                                                    <img className="object-cover" src={userRating.photo}/>
+                                                </div>
+                                            </>}
+
                                         </div>
                                     )
                                 }
@@ -276,7 +320,7 @@ export default function Ratings(props) {
                     />
                     <p>{rating.date_last_updated}</p>
                     <p>{rating.review}</p>
-                    
+                    {console.log(rating.photo)}
                     {rating.photo && 
                     <>
                         <div onClick={() => clickCommentPhoto(rating.photo)} className="w-48">
