@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import DeleteRecipeModal from "./DeleteRecipeModal";
 import ImageModal from "./ImageModel";
 import Ratings from "./Ratings";
+import Ingredients from "./Ingredients";
 import Loading from "./Loading";
 
 import { Rating } from '@smastrom/react-rating';
@@ -94,7 +95,7 @@ export default function AllRecipes() {
                     <p>{recipe.servings}</p>
 
                     <label className="text-2xl font-bold font-medium block mt-5">Ingredients</label>
-                    <p>{recipe.ingredients}</p>
+                    <p>{recipe.ingredients_old}</p>
 
                     <label className="text-2xl font-bold font-medium block mt-5">Equipment</label>
                     <p>{recipe.equipment}</p>

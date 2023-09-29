@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../axios';
+
+import Ingredients from "./Ingredients";
   
 
 export default function CreateRecipe() {
@@ -158,6 +160,9 @@ export default function CreateRecipe() {
                     </div>
                     )}
                 </div>
+
+                <Ingredients />
+
                 <div>
                     <label className="text-gray-600 font-medium block mt-4">Equipment</label>
                     <textarea 

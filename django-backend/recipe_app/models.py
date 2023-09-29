@@ -22,7 +22,7 @@ class Recipe(models.Model):
     prep_time = models.IntegerField()
     cook_time = models.IntegerField()
     servings = models.IntegerField()
-    ingredients = models.CharField(max_length=500)
+    ingredients_old = models.CharField(max_length=500)
     equipment = models.CharField(max_length=500)
     directions = models.CharField(max_length=500)
     published_date = models.DateField(default=date.today)
@@ -45,3 +45,9 @@ class Rating(models.Model):
     published_date = models.DateField(default=date.today)
     updated_date = models.DateField(default=date.today)
     photo = models.ImageField(upload_to='images/ratings/', blank=True)
+
+
+class Ingredient(models.Model):
+    
+    recipe = models.ForeignKey(Recipe,on_delete=models.CASCADE, related_name='ingredients')
+    ingredient = models.CharField(max_length=50)
