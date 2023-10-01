@@ -117,6 +117,14 @@ export default function Ratings(props) {
         setShowImageModal(true);
     }
 
+    const getStarsPercentage = (stars, count) => {
+        if(count == 0) {
+            return 0 + "%";
+        } else {
+            return stars/count * 100 + "%";
+        }
+    }
+
 // py-10 mt-10 mb-10 px-12 border bg-white rounded-md
     return(
         <div id="ratings" className="max-w-4xl m-auto pb-9">
@@ -131,9 +139,10 @@ export default function Ratings(props) {
                                 readOnly
                                 style={{ maxWidth: 300 }}
                             />
-                            <h1 className="">{ratingStats.average} out of 5</h1>
+                            
                             
                         </div>
+                        <h1 className="flex justify-center">{ratingStats.average} out of 5</h1>
                         <h1 className="flex justify-center">{ratingStats.count} Ratings</h1>
                         <div className="">
                             <div className="flex justify-center pt-1">
@@ -142,7 +151,7 @@ export default function Ratings(props) {
                                 <div className="w-96 h-5 bg-gray-300 rounded">
                                     <div 
                                         className="h-5 bg-red-800 rounded" 
-                                        style={{width: ratingStats.five_stars/ratingStats.count * 100 + "%"}}>
+                                        style={{width: getStarsPercentage(ratingStats.five_stars,ratingStats.count)}}>
                                     </div>
                                 </div>
                                 <p className="px-1">{ratingStats.five_stars}</p>
@@ -153,7 +162,7 @@ export default function Ratings(props) {
                                 <div className="w-96 h-5 bg-gray-300 rounded">
                                     <div 
                                         className="h-5 bg-red-800 rounded" 
-                                        style={{width: ratingStats.four_stars/ratingStats.count * 100 + "%"}}>
+                                        style={{width: getStarsPercentage(ratingStats.four_stars,ratingStats.count)}}>
                                     </div>
                                 </div>
                                 <p className="px-1">{ratingStats.four_stars}</p>
@@ -164,7 +173,7 @@ export default function Ratings(props) {
                                 <div className="w-96 h-5 bg-gray-300 rounded">
                                     <div 
                                         className="h-5 bg-red-800 rounded" 
-                                        style={{width: ratingStats.three_stars/ratingStats.count * 100 + "%"}}>
+                                        style={{width: getStarsPercentage(ratingStats.three_stars,ratingStats.count)}}>
                                     </div>
                                 </div>
                                 <p className="px-1">{ratingStats.three_stars}</p>
@@ -175,7 +184,7 @@ export default function Ratings(props) {
                                 <div className="w-96 h-5 bg-gray-300 rounded">
                                     <div 
                                         className="h-5 bg-red-800 rounded" 
-                                        style={{width: ratingStats.two_stars/ratingStats.count * 100 + "%"}}>
+                                        style={{width: getStarsPercentage(ratingStats.two_stars,ratingStats.count)}}>
                                     </div>
                                 </div>
                                 <p className="px-1">{ratingStats.two_stars}</p>
@@ -186,7 +195,7 @@ export default function Ratings(props) {
                                 <div className="w-96 h-5 bg-gray-300 rounded">
                                     <div 
                                         className="h-5 bg-red-800 rounded" 
-                                        style={{width: ratingStats.one_stars/ratingStats.count * 100 + "%"}}>
+                                        style={{width: getStarsPercentage(ratingStats.one_stars,ratingStats.count)}}>
                                     </div>
                                 </div>
                                 <p className="px-1">{ratingStats.one_stars}</p>
@@ -244,7 +253,7 @@ export default function Ratings(props) {
                                                         onChange: (e) => {onChangePicture(e)}
                                                     })} 
                                                 />
-                                                {picture && <div className="aspect-w-3 aspect-h-2">
+                                                {picture && <div className="w-48">
                                                     <img className="object-cover" src={picture}/>
                                                 </div>}
                                                 {/* {watchPhoto && <img src={URL.createObjectURL(getValues("photo"))}/>} */}

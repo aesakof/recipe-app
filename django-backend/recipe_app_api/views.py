@@ -108,7 +108,7 @@ def UserRating(request):
 
     try:
         rating = Rating.objects.filter(recipe=recipe_id, user=request.user).latest('updated_date')
-        serializer = RatingSerializer(rating)
+        serializer = RatingSerializer(rating,context={"request":request})
 
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Rating.DoesNotExist:
@@ -121,7 +121,11 @@ def RatingStats(request):
     ratings = Rating.objects.filter(recipe=recipe_id)
     
     count = ratings.count()
-    average = ratings.aggregate(Avg('rating'))
+    if count == 0:
+        average = 0
+    else:
+        average = round(ratings.aggregate(Avg('rating'))['rating__avg'], 1)
+
     one_stars = ratings.filter(rating=1).count()
     two_stars = ratings.filter(rating=2).count()
     three_stars = ratings.filter(rating=3).count()
@@ -130,7 +134,8 @@ def RatingStats(request):
 
     return Response({
         "count": count,
-        "average": round(average['rating__avg'], 1),
+        # "average": round(average['rating__avg'], 1),
+        "average": average,
         "one_stars": one_stars,
         "two_stars": two_stars,
         "three_stars": three_stars,
