@@ -9,10 +9,18 @@ export default function Ingredients(props) {
     return(
         <div id="ratings" className="max-w-4xl m-auto pb-9">
             <label className="text-2xl font-bold font-medium block">Ingredients</label>
-            <input className="border-solid border-gray-300 border my-3 py-2 px-4 w-full rounded text-gray-700" />
-            <input className="border-solid border-gray-300 border my-3 py-2 px-4 w-full rounded text-gray-700" />
-            <input className="border-solid border-gray-300 border my-3 py-2 px-4 w-full rounded text-gray-700" />
-
+            <div className="flex justify-between my-3 align-middle">
+                <input className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" />
+                <ion-icon name="close-circle-outline" style={{fontSize: "28px"}}></ion-icon>
+            </div>
+            <div className="flex justify-between my-3">
+                <input className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" />
+                <ion-icon name="close-circle-outline" style={{fontSize: "28px"}}></ion-icon>
+            </div >
+            <div className="flex justify-between my-3">
+                <input className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" />
+                <ion-icon name="close-circle-outline" style={{fontSize: "28px"}}></ion-icon>
+            </div>
         </div>
     )
 }
