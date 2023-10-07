@@ -51,6 +51,7 @@ export default function CreateRecipe() {
 
     return (
         <React.Fragment>
+            <Ingredients />
             <form 
                 className="max-w-2xl m-auto py-10 mt-10 mb-10 px-12 border bg-white rounded-md"
                 onSubmit={handleSubmit(onFormSubmit, onErrors)}
@@ -161,7 +162,7 @@ export default function CreateRecipe() {
                     )}
                 </div>
 
-                <Ingredients />
+                {/* <Ingredients /> */}
 
                 <div>
                     <label className="text-gray-600 font-medium block mt-4">Equipment</label>
