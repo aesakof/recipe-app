@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../axios';
 
@@ -7,7 +7,8 @@ import Ingredients from "./Ingredients";
   
 
 export default function CreateRecipe() {
-    const { register, handleSubmit, watch, getValues, formState: { errors } } = useForm();
+    const methods = useForm();
+    const { register, handleSubmit, watch, getValues, formState: { errors } } = methods;
     const navigate = useNavigate();
 
     const [picture, setPicture] = useState(null);
@@ -50,7 +51,7 @@ export default function CreateRecipe() {
     const onErrors = (errors) => console.error(errors);
 
     return (
-        <React.Fragment>
+        <FormProvider {...methods}>
             <Ingredients />
             <form 
                 className="max-w-2xl m-auto py-10 mt-10 mb-10 px-12 border bg-white rounded-md"
@@ -147,7 +148,7 @@ export default function CreateRecipe() {
                     </div>
                     )}
                 </div>
-                <div>
+                {/* <div>
                     <label className="text-gray-600 font-medium block mt-4">Ingredients</label>
                     <textarea 
                         className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
@@ -160,9 +161,9 @@ export default function CreateRecipe() {
                         {errors.ingredients.message}
                     </div>
                     )}
-                </div>
+                </div> */}
 
-                {/* <Ingredients /> */}
+                <Ingredients />
 
                 <div>
                     <label className="text-gray-600 font-medium block mt-4">Equipment</label>
@@ -212,6 +213,6 @@ export default function CreateRecipe() {
                     Submit
                 </button>
             </form>
-        </React.Fragment>
+        </FormProvider>
     );
 };
