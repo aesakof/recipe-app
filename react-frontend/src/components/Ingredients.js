@@ -17,36 +17,36 @@ export default function Ingredients(props) {
         }
     })
 
-    const addIngedientRow = () => {
-        const ingRow = {
-            ingredient:'',
-            header: false
-        }
-        setIngredientRows([...ingredientRows, ingRow]);
-    }
+    // const addIngedientRow = () => {
+    //     const ingRow = {
+    //         ingredient:'',
+    //         header: false
+    //     }
+    //     setIngredientRows([...ingredientRows, ingRow]);
+    // }
 
-    const addHeaderRow = () => {
-        const ingRow = {
-            ingredient:'',
-            header: true
-        }
-        setIngredientRows([...ingredientRows, ingRow]);
-    }
+    // const addHeaderRow = () => {
+    //     const ingRow = {
+    //         ingredient:'',
+    //         header: true
+    //     }
+    //     setIngredientRows([...ingredientRows, ingRow]);
+    // }
 
-    const deleteIngredientRow = (index) => {
-        console.log("Deleting row with index: " + index);
-        const rows = [...ingredientRows];
-        rows.splice(index, 1);
-        console.log(rows)
-        setIngredientRows(rows);
-    }
+    // const deleteIngredientRow = (index) => {
+    //     console.log("Deleting row with index: " + index);
+    //     const rows = [...ingredientRows];
+    //     rows.splice(index, 1);
+    //     console.log(rows)
+    //     setIngredientRows(rows);
+    // }
 
-    const handleChange = (index, evnt) => {
-        const rows = [...ingredientRows];
-        rows[index]["ingredient"] = evnt.target.value;
-        console.log(rows)
-        setIngredientRows(rows)
-    }
+    // const handleChange = (index, evnt) => {
+    //     const rows = [...ingredientRows];
+    //     rows[index]["ingredient"] = evnt.target.value;
+    //     console.log(rows)
+    //     setIngredientRows(rows)
+    // }
 
     return(
         <div id="ratings" className="max-w-4xl m-auto pb-9">

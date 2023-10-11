@@ -84,13 +84,13 @@ class IngredientViewSet(viewsets.ModelViewSet):
 
     queryset = Ingredient.objects.all()
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    # def perform_create(self, serializer):
+    #     serializer.save(user=self.request.user)
         # serializer.save(published_date=date.today())
         # serializer.save(updated_date=date.today())
 
-    def perform_update(self, serializer):
-        serializer.save(updated_date=date.today())
+    # def perform_update(self, serializer):
+    #     serializer.save(updated_date=date.today())
 
     def get_permissions(self):
         if self.action in ['update', 'partial_update', 'destroy']: # also retrieve

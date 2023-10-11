@@ -32,7 +32,6 @@ export default function CreateRecipe() {
         formData.append('ingredients', data.ingredients);
         formData.append('equipment', data.equipment);
         formData.append('directions', data.directions);
-        formData.append('rating', data.rating);
 
         const config = {
             headers: {
@@ -190,19 +189,6 @@ export default function CreateRecipe() {
                     {errors.directions && (
                     <div className="mb-3 text-normal text-red-500">
                         {errors.directions.message}
-                    </div>
-                    )}
-                </div>
-                <div>
-                    <label className="text-gray-600 font-medium block mt-4">Rating</label>
-                    <input 
-                        className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
-                        name="rating" 
-                        {...register('rating', { required: { value: true, message: "This field is required"}})} 
-                    />
-                    {errors.rating && (
-                    <div className="mb-3 text-normal text-red-500">
-                        {errors.rating.message}
                     </div>
                     )}
                 </div>
