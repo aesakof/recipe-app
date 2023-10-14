@@ -19,7 +19,8 @@ export default function CreateRecipe() {
     }
 
     const onFormSubmit = (data) => { 
-        console.log(data);
+        // console.log('RAW DATA')
+        // console.log(data);
         const formData = new FormData();
         if(data.photo.length >= 1) {
             formData.append('photo', data.photo[0]);
@@ -29,9 +30,29 @@ export default function CreateRecipe() {
         formData.append('prep_time', data.prep_time);
         formData.append('cook_time', data.cook_time);
         formData.append('servings', data.servings);
-        formData.append('ingredients', data.ingredients);
+        formData.append('ingredients', JSON.stringify(data.ingredients));
+        
+        // let jsonBlob = new Blob([JSON.stringify(data.ingredients), {type: 'application/json'}])
+        // formData.append('ingredients', jsonBlob, 'data.json');
+
+        // console.log(data.ingredients)
+        // data.ingredients.forEach(element => {
+        //     // console.log(JSON.stringify(element))
+        //     formData.append('ingredients', element)
+        // });
+
+        console.log(...formData)
+        // console.log(formData.getAll('ingredients[]'))
+
+        // for(let i=0; i < data.ingredients.length; i++) {
+        //     console.log(data.ingredients[i])
+        //     formData.append('ingredients[]', JSON.stringify(data.ingredients[i]))
+        // }
+
         formData.append('equipment', data.equipment);
         formData.append('directions', data.directions);
+
+        // console.log(formData)
 
         const config = {
             headers: {

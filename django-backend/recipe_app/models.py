@@ -50,4 +50,8 @@ class Rating(models.Model):
 class Ingredient(models.Model):
     
     recipe = models.ForeignKey(Recipe,on_delete=models.CASCADE, related_name='ingredients')
-    ingredients = models.JSONField(blank=True, default=None, null=True)
+    description = models.CharField(max_length=50, default="bananas")
+    header = models.BooleanField(default=False)
+    order = models.IntegerField(default=1)
+    
+    # ingredients = models.JSONField(blank=True, default=None, null=True)

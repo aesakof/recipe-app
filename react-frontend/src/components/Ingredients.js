@@ -81,7 +81,8 @@ export default function Ingredients(props) {
                 onClick={() => {
                     append({
                         description:'',
-                        header: false
+                        header: false,
+                        order: 0
                     });
                 }} 
             >
@@ -92,7 +93,8 @@ export default function Ingredients(props) {
                 onClick={() => {
                     append({
                         description:'',
-                        header: true
+                        header: true,
+                        order: 0
                     });
                 }} 
             >
