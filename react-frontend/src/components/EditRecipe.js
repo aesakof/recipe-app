@@ -2,13 +2,15 @@ import React, { useState, useEffect, useContext } from 'react';
 import axiosInstance from '../axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Context } from '../Context';
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 
 import 'date-fns';
+import Ingredients from './Ingredients';
 
 
 export default function EditRecipe() {
-    const { register, watch, handleSubmit, setValue, getValues, formState: { errors } } = useForm();
+    const methods = useForm();
+    const { register, handleSubmit, watch, getValues, setValue, formState: { errors } } = methods;    
     const watchPhoto = watch('photo');
 
     const [picture, setPicture] = useState(null);
@@ -47,7 +49,6 @@ export default function EditRecipe() {
             setValue('ingredients', res.data.ingredients)
             setValue('equipment', res.data.equipment)
             setValue('directions', res.data.directions)
-            setValue('rating', res.data.rating)
         });
     }, [username])
 
@@ -62,10 +63,9 @@ export default function EditRecipe() {
         formData.append('prep_time', data.prep_time);
         formData.append('cook_time', data.cook_time);
         formData.append('servings', data.servings);
-        formData.append('ingredients', data.ingredients);
         formData.append('equipment', data.equipment);
         formData.append('directions', data.directions);
-        formData.append('rating', data.rating);
+        formData.append('ingredients', JSON.stringify(data.ingredients));
 
         const config = {
             headers: {
@@ -83,7 +83,7 @@ export default function EditRecipe() {
     const onErrors = (errors) => console.error(errors);
 
     return (
-        <React.Fragment>
+        <FormProvider {...methods} >
             <form 
                 className="max-w-2xl m-auto py-10 mt-10 mb-10 px-12 border bg-white rounded-md"
                 onSubmit={handleSubmit(onFormSubmit, onErrors)}
@@ -180,20 +180,9 @@ export default function EditRecipe() {
                     </div>
                     )}
                 </div>
-                <div>
-                    <label className="text-gray-600 font-medium block mt-4">Ingredients</label>
-                    <textarea 
-                        className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
-                        name="ingredients"
-                        rows={5} 
-                        {...register('ingredients', { required: { value: true, message: "This field is required"}})} 
-                    />
-                    {errors.ingredients && (
-                    <div className="mb-3 text-normal text-red-500">
-                        {errors.ingredients.message}
-                    </div>
-                    )}
-                </div>
+
+                <Ingredients />
+
                 <div>
                     <label className="text-gray-600 font-medium block mt-4">Equipment</label>
                     <textarea 
@@ -222,19 +211,6 @@ export default function EditRecipe() {
                     </div>
                     )}
                 </div>
-                <div>
-                    <label className="text-gray-600 font-medium block mt-4">Rating</label>
-                    <input 
-                        className="border-solid border-gray-300 border py-2 px-4 w-full rounded text-gray-700" 
-                        name="rating" 
-                        {...register('rating', { required: { value: true, message: "This field is required"}})} 
-                    />
-                    {errors.rating && (
-                    <div className="mb-3 text-normal text-red-500">
-                        {errors.rating.message}
-                    </div>
-                    )}
-                </div>
                 <button
                     className="mt-4 w-full bg-blue-400 hover:bg-blue-600 text-blue-100 border py-3 px-6 font-semibold text-md rounded"
                     type="submit"
@@ -242,6 +218,6 @@ export default function EditRecipe() {
                     Submit
                 </button>
             </form>
-        </React.Fragment>
+        </FormProvider>
     );
 };

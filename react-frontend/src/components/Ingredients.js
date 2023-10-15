@@ -78,6 +78,7 @@ export default function Ingredients(props) {
             }
             <button 
                 className="mt-4 outline hover:bg-gray-500 hover:text-white py-3 px-6 font-semibold text-md rounded" 
+                type="button"
                 onClick={() => {
                     append({
                         description:'',
@@ -90,6 +91,7 @@ export default function Ingredients(props) {
             </button>
             <button 
                 className="mt-4 ml-2 hover:underline py-3 px-6 text-md rounded" 
+                type="button"
                 onClick={() => {
                     append({
                         description:'',

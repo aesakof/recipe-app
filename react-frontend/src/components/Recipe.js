@@ -82,25 +82,36 @@ export default function AllRecipes() {
                         showImageModal ? <ImageModal showImageModal={showImageModal} setShowImageModal={setShowImageModal} image={recipe.photo} /> : null
                     }
 
-                    <label className="text-2xl font-bold font-medium block mt-5">Life Story</label>
+                    <label className="text-3xl font-bold font-medium block mt-5">Life Story</label>
                     <p>{recipe.life_story}</p>
 
-                    <label className="text-2xl font-bold font-medium block mt-5">Prep Time</label>
+                    <label className="text-3xl font-bold font-medium block mt-5">Prep Time</label>
                     <p>{recipe.prep_time}</p>
 
-                    <label className="text-2xl font-bold font-medium block mt-5">Cook Time</label>
+                    <label className="text-3xl font-bold font-medium block mt-5">Cook Time</label>
                     <p>{recipe.cook_time}</p>
 
-                    <label className="text-2xl font-bold font-medium block mt-5">Servings</label>
+                    <label className="text-3xl font-bold font-medium block mt-5">Servings</label>
                     <p>{recipe.servings}</p>
 
-                    <label className="text-2xl font-bold font-medium block mt-5">Ingredients</label>
-                    <p>{recipe.ingredients_old}</p>
+                    <label className="text-3xl font-bold font-medium block mt-5">Ingredients</label>
+                    {
+                        recipe.ingredients.map( (ingredient) => (
+                            <ul className="list-inside">
+                                { 
+                                    ingredient.header ? 
+                                    <li className="text-lg font-bold py-1 w-full rounded">{ingredient.description}</li>
+                                    :
+                                    <li className="list-disc w-full">{ingredient.description}</li>
+                                }
+                            </ul>
+                        ))
+                    }
 
-                    <label className="text-2xl font-bold font-medium block mt-5">Equipment</label>
+                    <label className="text-3xl font-bold font-medium block mt-5">Equipment</label>
                     <p>{recipe.equipment}</p>
 
-                    <label className="text-2xl font-bold font-medium block mt-5">Directions</label>
+                    <label className="text-3xl font-bold font-medium block mt-5">Directions</label>
                     <p>{recipe.directions}</p>
                 </div>
 

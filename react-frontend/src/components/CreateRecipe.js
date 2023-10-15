@@ -7,7 +7,7 @@ import Ingredients from "./Ingredients";
   
 
 export default function CreateRecipe() {
-    const methods = useForm();
+    const methods = useForm({ mode: "onSubmit", reValidateMode: "onSubmit"});
     const { register, handleSubmit, watch, getValues, formState: { errors } } = methods;
     const navigate = useNavigate();
 

@@ -46,3 +46,33 @@ class RecipeSerializer(serializers.ModelSerializer):
         for ingredient_data in ingredients_data:
             Ingredient.objects.create(recipe=recipe, **ingredient_data)
         return recipe
+    
+    def update(self, instance, validated_data):
+        if 'ingredients' in validated_data:
+            ingredients_data = validated_data.pop('ingredients')
+        else:
+            ingredients_data_str = self.context['request'].POST.get('ingredients', '[]')
+            ingredients_data = json.loads(ingredients_data_str)
+        
+        ingredients = (instance.ingredients).all()
+        ingredients = list(ingredients)
+
+        print(ingredients)
+
+        instance.recipe_name = validated_data.get('recipe_name', instance.recipe_name)
+        instance.photo = validated_data.get('photo', instance.photo)
+        instance.life_story = validated_data.get('life_story', instance.life_story)
+        instance.prep_time = validated_data.get('prep_time', instance.prep_time)
+        instance.cook_time = validated_data.get('cook_time', instance.cook_time)
+        instance.servings = validated_data.get('servings', instance.servings)
+        instance.save()
+
+
+        for ingredient_data in ingredients_data:
+            print(ingredient_data.get('id'))
+            ingredient = Ingredient.objects.get(pk=ingredient_data.get('id'))
+            ingredient.description = ingredient_data.get('description', ingredient.description)
+            ingredient.order = ingredient_data.get('order', ingredient.order)
+            ingredient.save()
+
+        return instance

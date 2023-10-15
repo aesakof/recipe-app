@@ -128,7 +128,7 @@ export default function Ratings(props) {
 // py-10 mt-10 mb-10 px-12 border bg-white rounded-md
     return(
         <div id="ratings" className="max-w-4xl m-auto pb-9">
-            <label className="text-2xl font-bold font-medium block">Ratings ({props.num_ratings})</label>
+            <label className="text-3xl font-bold font-medium block">Ratings ({props.num_ratings})</label>
             <hr className="my-5"></hr>
             <div className="bg-gray-300 p-6">
                 <div className="bg-white p-5">
